@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "479177647580",
+    "project_id": "mada-mal",
+    "storage_bucket": "mada-mal.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:479177647580:android:373f789ebaecb3d8a95b19",
+        "android_client_info": {
+          "package_name": "com.harelshaigal.madamal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8PT0FJsLc4UmG7bD3BC0I3YUbgOwWr9I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
