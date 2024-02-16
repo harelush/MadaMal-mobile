@@ -38,6 +38,7 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -50,7 +51,8 @@ android {
 }
 
 dependencies {
-
+    implementation("com.wajahatkarim:easyvalidation-core:1.0.4")
+    implementation("com.wajahatkarim:easyvalidation-toast:1.0.4")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.activity:activity-compose:1.7.0")

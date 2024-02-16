@@ -1,10 +1,12 @@
 <resources>
     <string name="app_name">MadaMal</string>
-    <string name="login_image">header</string>
+    <string name="header_image">header</string>
     <string name="login_page">Login Page</string>
-    <string name="username">Username</string>
+    <string name="register_page">Register Page</string>
+    <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="for_sign_up_click_here">For a sign up click here</string>
+    <string name="for_sign_in_click_here">Already signed? click here to login</string>
 
 </resources>
