@@ -7,16 +7,16 @@ import com.harelshaigal.madamal.databinding.ActivityRegisterBinding
 import com.wajahatkarim3.easyvalidation.core.view_ktx.validator
 
 class RegisterActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityRegisterBinding;
+    private lateinit var binding: ActivityRegisterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityRegisterBinding.inflate(layoutInflater);
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.registerLoginButton.setOnClickListener(View.OnClickListener {
+        binding.registerRegisterButton.setOnClickListener {
             validateEmailAndPassword()
-        })
+        }
     }
 
     private fun validateEmailAndPassword() {

@@ -7,16 +7,16 @@ import com.harelshaigal.madamal.databinding.ActivityLoginBinding
 import com.wajahatkarim3.easyvalidation.core.view_ktx.validator
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityLoginBinding;
+    private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater);
+        binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.loginLoginButton.setOnClickListener(View.OnClickListener {
+        binding.loginLoginButton.setOnClickListener {
             validateEmailAndPassword()
-        })
+        }
     }
 
     private fun validateEmailAndPassword() {
