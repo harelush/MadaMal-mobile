@@ -1,7 +1,6 @@
 package com.harelshaigal.madamal
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.harelshaigal.madamal.databinding.ActivityRegisterBinding
 import com.wajahatkarim3.easyvalidation.core.view_ktx.validator
