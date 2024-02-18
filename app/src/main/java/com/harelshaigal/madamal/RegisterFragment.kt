@@ -1,10 +1,13 @@
 package com.harelshaigal.madamal
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseAuth
 import com.harelshaigal.madamal.databinding.FragmentRegisterBinding
 import com.wajahatkarim3.easyvalidation.core.view_ktx.validator
 
@@ -12,6 +15,7 @@ class RegisterFragment : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
+    private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,6 +28,8 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        firebaseAuth = FirebaseAuth.getInstance()
 
         binding.registerRegisterButton.setOnClickListener {
             validateEmailAndPassword()
@@ -55,7 +61,18 @@ class RegisterFragment : Fragment() {
             .check()
 
         if (isEmailValid && isPasswordValid) {
-            // Proceed with registration logic or next steps
+            firebaseAuth.createUserWithEmailAndPassword(
+                binding.registerEmailEditText.toString(),
+                binding.registerPasswordEditText.toString(),
+            ).addOnCompleteListener {
+                if (it.isSuccessful) {
+                    val intent = Intent(context, MainActivity::class.java)
+                    startActivity(intent)
+                    activity?.finish()
+                } else {
+                    Toast.makeText(context, "Error sign up, try again", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
