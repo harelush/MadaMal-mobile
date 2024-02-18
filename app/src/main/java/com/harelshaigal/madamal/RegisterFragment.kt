@@ -7,15 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.harelshaigal.madamal.databinding.FragmentRegisterBinding
 import com.wajahatkarim3.easyvalidation.core.view_ktx.validator
 
 class RegisterFragment : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null
+    val auth = Firebase.auth
     private val binding get() = _binding!!
-    private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,8 +29,6 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        firebaseAuth = FirebaseAuth.getInstance()
 
         binding.registerRegisterButton.setOnClickListener {
             validateEmailAndPassword()
@@ -53,17 +52,15 @@ class RegisterFragment : Fragment() {
         val isPasswordValid = binding.registerPasswordEditText.validator()
             .nonEmpty()
             .atleastOneNumber()
-            .atleastOneSpecialCharacters()
-            .atleastOneSpecialCharacters()
             .addErrorCallback {
                 binding.registerPasswordEditText.error = it
             }
             .check()
 
         if (isEmailValid && isPasswordValid) {
-            firebaseAuth.createUserWithEmailAndPassword(
-                binding.registerEmailEditText.toString(),
-                binding.registerPasswordEditText.toString(),
+            auth.createUserWithEmailAndPassword(
+                binding.registerEmailEditText.text.toString().trim(),
+                binding.registerPasswordEditText.text.toString().trim(),
             ).addOnCompleteListener {
                 if (it.isSuccessful) {
                     val intent = Intent(context, MainActivity::class.java)
