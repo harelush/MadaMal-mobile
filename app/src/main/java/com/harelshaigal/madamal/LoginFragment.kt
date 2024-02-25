@@ -7,22 +7,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.harelshaigal.madamal.databinding.FragmentLoginBinding
 import com.wajahatkarim3.easyvalidation.core.view_ktx.validator
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class LoginFragment : Fragment() {
-    val auth = Firebase.auth
     private var _binding: FragmentLoginBinding? = null
-
-    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
+    private val auth = Firebase.auth
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
@@ -32,16 +33,17 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.loginLoginButton.setOnClickListener {
-            validateEmailAndPassword()
+            CoroutineScope(Dispatchers.Main).launch {
+                validateEmailAndPassword()
+            }
         }
 
         binding.loginSignUpLink.setOnClickListener {
-            // Navigate to RegisterFragment
             (activity as? LoginActivity)?.replaceFragment(RegisterFragment())
         }
     }
 
-    private fun validateEmailAndPassword() {
+    private suspend fun validateEmailAndPassword() {
         val isEmailValid = binding.loginEmailEditText.validator()
             .nonEmpty()
             .validEmail()
@@ -59,23 +61,34 @@ class LoginFragment : Fragment() {
             .check()
 
         if (isEmailValid && isPasswordValid) {
-            auth.signInWithEmailAndPassword(
-                binding.loginEmailEditText.text.toString().trim(),
-                binding.loginPasswordEditText.text.toString().trim(),
-            ).addOnCompleteListener {
-                if (it.isSuccessful) {
-                    val intent = Intent(context, MainActivity::class.java)
-                    startActivity(intent)
-                    activity?.finish()
-                } else {
+            try {
+                showProgressBar(true)
+                auth.signInWithEmailAndPassword(
+                    binding.loginEmailEditText.text.toString().trim(),
+                    binding.loginPasswordEditText.text.toString().trim(),
+                ).await()
+                navigateToMainActivity()
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
                     Toast.makeText(context, "Error sign in, try again", Toast.LENGTH_SHORT).show()
                 }
+            } finally {
+                showProgressBar(false)
             }
         }
     }
 
+    private fun showProgressBar(show: Boolean) {
+        binding.loginProgressBar.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
+    private fun navigateToMainActivity() {
+        startActivity(Intent(context, MainActivity::class.java))
+        activity?.finish()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null // Clear the binding when the view is destroyed
+        _binding = null
     }
 }

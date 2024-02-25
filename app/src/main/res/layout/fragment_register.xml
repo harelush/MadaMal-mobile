@@ -47,19 +47,46 @@
         app:layout_constraintTop_toBottomOf="@id/register_emailEditText"
         android:autofillHints="@string/password" />
 
+    <EditText
+        android:id="@+id/register_fullNameEditText"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/full_name"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/register_passwordEditText"
+        android:autofillHints="@string/full_name" />
+
+    <ImageView
+        android:id="@+id/register_profileImageView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:layout_constraintTop_toBottomOf="@id/register_fullNameEditText"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/default_doctor_image"
+        android:contentDescription="@string/profile_pic" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/register_registerButton"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="16dp"
         android:backgroundTint="@color/primary"
         android:text="@string/register"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/register_passwordEditText" />
+        app:layout_constraintTop_toBottomOf="@id/register_profileImageView" />
 
     <TextView
         android:id="@+id/register_signInLink"
@@ -73,5 +100,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/register_registerButton" />
+
+    <ProgressBar
+        android:id="@+id/register_progressBar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/register_emailEditText"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
