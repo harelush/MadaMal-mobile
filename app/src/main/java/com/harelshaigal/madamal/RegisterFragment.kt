@@ -10,28 +10,35 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.harelshaigal.madamal.databinding.FragmentRegisterBinding
 import com.wajahatkarim3.easyvalidation.core.view_ktx.validator
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class RegisterFragment : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null
-    val auth = Firebase.auth
+    private val auth = Firebase.auth
     private val binding get() = _binding!!
+    private var selectedImageUri: Uri? = null
 
-    // Initialize ActivityResultLauncher
     private lateinit var imagePickerLauncher: ActivityResultLauncher<String>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Register the launcher and define the result handling logic
-        imagePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            // Update the ImageView with the selected image URI
-            uri?.let {
-                binding.registerProfileImageView.setImageURI(uri)
+        imagePickerLauncher =
+            registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+                uri?.let {
+                    binding.registerProfileImageView.setImageURI(uri)
+                    selectedImageUri = uri
+                }
             }
-        }
     }
 
     override fun onCreateView(
@@ -47,18 +54,14 @@ class RegisterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.registerRegisterButton.setOnClickListener {
-            validateEmailAndPassword()
+            showProgressBar(true)
+            CoroutineScope(Dispatchers.IO).launch {
+                registerUser()
+            }
         }
 
         binding.registerSignInLink.setOnClickListener {
-            // Navigate back to LoginFragment
             (activity as? LoginActivity)?.replaceFragment(LoginFragment())
-        }
-
-        imagePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            uri?.let {
-                binding.registerProfileImageView.setImageURI(uri)
-            }
         }
 
         binding.registerProfileImageView.setOnClickListener {
@@ -66,42 +69,66 @@ class RegisterFragment : Fragment() {
         }
     }
 
+    private suspend fun registerUser() {
+        if (validateEmailAndPassword()) {
+            val email = binding.registerEmailEditText.text.toString().trim()
+            val password = binding.registerPasswordEditText.text.toString().trim()
+
+            try {
+                auth.createUserWithEmailAndPassword(email, password).await()
+                uploadImageToFirebaseStorage()?.let {
+                    withContext(Dispatchers.Main) {
+                        navigateToMainActivity()
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    showToast("Registration failed: ${e.message}")
+                }
+            } finally {
+                withContext(Dispatchers.Main) {
+                    showProgressBar(false)
+                }
+            }
+        } else {
+            withContext(Dispatchers.Main) {
+                showProgressBar(false)
+                showToast("Invalid email or password")
+            }
+        }
+    }
+
+    private fun validateEmailAndPassword(): Boolean {
+        val isEmailValid = binding.registerEmailEditText.validator().nonEmpty().validEmail().check()
+        val isPasswordValid =
+            binding.registerPasswordEditText.validator().nonEmpty().atleastOneNumber().check()
+        return isEmailValid && isPasswordValid
+    }
+
+    private suspend fun uploadImageToFirebaseStorage(): Uri? {
+        return selectedImageUri?.let { uri ->
+            val ref =
+                Firebase.storage.reference.child("images/${Firebase.auth.currentUser?.uid}/profile.jpg")
+            ref.putFile(uri).await()
+            ref.downloadUrl.await()
+        }
+    }
+
     private fun openGalleryForImage() {
         imagePickerLauncher.launch("image/*")
     }
 
+    private fun showProgressBar(show: Boolean) {
+        binding.registerProgressBar.visibility = if (show) View.VISIBLE else View.GONE
+    }
 
-    private fun validateEmailAndPassword() {
-        val isEmailValid = binding.registerEmailEditText.validator()
-            .nonEmpty()
-            .validEmail()
-            .addErrorCallback {
-                binding.registerEmailEditText.error = it
-            }
-            .check()
+    private fun navigateToMainActivity() {
+        startActivity(Intent(context, MainActivity::class.java))
+        activity?.finish()
+    }
 
-        val isPasswordValid = binding.registerPasswordEditText.validator()
-            .nonEmpty()
-            .atleastOneNumber()
-            .addErrorCallback {
-                binding.registerPasswordEditText.error = it
-            }
-            .check()
-
-        if (isEmailValid && isPasswordValid) {
-            auth.createUserWithEmailAndPassword(
-                binding.registerEmailEditText.text.toString().trim(),
-                binding.registerPasswordEditText.text.toString().trim(),
-            ).addOnCompleteListener {
-                if (it.isSuccessful) {
-                    val intent = Intent(context, MainActivity::class.java)
-                    startActivity(intent)
-                    activity?.finish()
-                } else {
-                    Toast.makeText(context, "Error sign up, try again", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
+    private fun showToast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {
