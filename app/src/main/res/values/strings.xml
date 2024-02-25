@@ -11,5 +11,5 @@
     <string name="register">Register</string>
     <string name="for_sign_up_click_here">For a sign up click here</string>
     <string name="for_sign_in_click_here">Already signed? click here to login</string>
-
+    <string name="google_map_api_key">AIzaSyBtfk1M_Rd-x0yV8CbYrHSHXhXNEE9n2kM</string>
 </resources>
