@@ -106,13 +106,31 @@ class RegisterFragment : Fragment() {
     }
 
     private suspend fun uploadImageToFirebaseStorage(): Uri? {
-        return selectedImageUri?.let { uri ->
-            val ref =
-                Firebase.storage.reference.child("images/${Firebase.auth.currentUser?.uid}/profile.jpg")
-            ref.putFile(uri).await()
-            ref.downloadUrl.await()
+        val user = Firebase.auth.currentUser
+        return if (user != null && selectedImageUri != null) {
+            val uri = selectedImageUri!!
+            val fileName = "images/${user.uid}/profile.jpg"
+            val ref = Firebase.storage.reference.child(fileName)
+            try {
+                ref.putFile(uri).await() // Upload the file
+                val downloadUri = ref.downloadUrl.await()
+                withContext(Dispatchers.Main) {
+                }
+                downloadUri
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    showToast("Upload failed: ${e.message}") // Handle failure, e.g., show a toast
+                }
+                null
+            }
+        } else {
+            withContext(Dispatchers.Main) {
+                showToast("No user logged in or no image selected")
+            }
+            null
         }
     }
+
 
     private fun openGalleryForImage() {
         imagePickerLauncher.launch("image/*")
