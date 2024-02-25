@@ -1,11 +1,14 @@
 package com.harelshaigal.madamal
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
@@ -17,6 +20,19 @@ class RegisterFragment : Fragment() {
     private var _binding: FragmentRegisterBinding? = null
     val auth = Firebase.auth
     private val binding get() = _binding!!
+
+    // Initialize ActivityResultLauncher
+    private lateinit var imagePickerLauncher: ActivityResultLauncher<String>
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // Register the launcher and define the result handling logic
+        imagePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            // Update the ImageView with the selected image URI
+            uri?.let {
+                binding.registerProfileImageView.setImageURI(uri)
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,7 +54,22 @@ class RegisterFragment : Fragment() {
             // Navigate back to LoginFragment
             (activity as? LoginActivity)?.replaceFragment(LoginFragment())
         }
+
+        imagePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                binding.registerProfileImageView.setImageURI(uri)
+            }
+        }
+
+        binding.registerProfileImageView.setOnClickListener {
+            openGalleryForImage()
+        }
     }
+
+    private fun openGalleryForImage() {
+        imagePickerLauncher.launch("image/*")
+    }
+
 
     private fun validateEmailAndPassword() {
         val isEmailValid = binding.registerEmailEditText.validator()
