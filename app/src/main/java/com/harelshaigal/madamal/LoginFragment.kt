@@ -16,7 +16,6 @@ class LoginFragment : Fragment() {
     val auth = Firebase.auth
     private var _binding: FragmentLoginBinding? = null
 
-    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -36,7 +35,6 @@ class LoginFragment : Fragment() {
         }
 
         binding.loginSignUpLink.setOnClickListener {
-            // Navigate to RegisterFragment
             (activity as? LoginActivity)?.replaceFragment(RegisterFragment())
         }
     }

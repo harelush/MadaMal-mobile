@@ -1,8 +1,11 @@
 package com.harelshaigal.madamal
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.harelshaigal.madamal.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
@@ -13,17 +16,25 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (savedInstanceState == null) {
+        if (Firebase.auth.currentUser != null) {
+            navigateToMainActivity()
+        } else if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, LoginFragment())
                 .commit()
         }
     }
 
+    private fun navigateToMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
     fun replaceFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
-            .addToBackStack(null) // Add transaction to the back stack for proper back navigation
+            .addToBackStack(null)
             .commit()
     }
 }
