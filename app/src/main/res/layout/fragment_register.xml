@@ -107,6 +107,7 @@
         android:layout_height="805dp"
         android:layout_gravity="center"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/register_fullNameEditText"  />
+        app:layout_constraintTop_toBottomOf="@id/register_fullNameEditText"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
