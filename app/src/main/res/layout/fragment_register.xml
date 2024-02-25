@@ -72,7 +72,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="15dp"
         android:src="@drawable/default_doctor_image"
-        />
+        android:contentDescription="@string/profile_pic" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/register_registerButton"
