@@ -1,4 +1,4 @@
-package com.harelshaigal.madamal.ui.reportslist
+package com.harelshaigal.madamal.ui.reportsList
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle

@@ -19,7 +19,7 @@
 
        <fragment
         android:id="@+id/navigation_reports_list"
-        android:name="com.harelshaigal.madamal.ui.reportslist.ReportsListFragment"
+        android:name="com.harelshaigal.madamal.ui.reportsList.ReportsListFragment"
         android:label="@string/title_reports_list"
         tools:layout="@layout/fragment_reports_list" />
 
