@@ -1,13 +1,12 @@
-package com.harelshaigal.madamal.ui.notifications
+package com.harelshaigal.madamal.ui.reportslist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class NotificationsViewModel : ViewModel() {
-
+class ReportsListViewModel : ViewModel() {
     private val _text = MutableLiveData<String>().apply {
-        value = "This is notifications Fragment"
+        value = "This is report list Fragment"
     }
     val text: LiveData<String> = _text
 }

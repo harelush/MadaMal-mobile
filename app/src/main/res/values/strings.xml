@@ -12,8 +12,8 @@
     <string name="for_sign_up_click_here">For a sign up click here</string>
     <string name="for_sign_in_click_here">Already signed? click here to login</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-
+    <string name="title_home">בית</string>
+    <string name="title_reports_list">הדיווחים שלי</string>
+    <string name="title_reports_map">מפת הדיווחים</string>
+    <string name="title_user_profile">הפרופיל שלי</string>
 </resources>

@@ -1,13 +1,11 @@
-package com.harelshaigal.madamal.ui.dashboard
+package com.harelshaigal.madamal.ui.userProfile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class DashboardViewModel : ViewModel() {
-
+class UserProfileViewModel : ViewModel() {
     private val _text = MutableLiveData<String>().apply {
-        value = "This is dashboard Fragment"
+        value = "This is user data Fragment"
     }
-    val text: LiveData<String> = _text
-}
+    val text: LiveData<String> = _text}

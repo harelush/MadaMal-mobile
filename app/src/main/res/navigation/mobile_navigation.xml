@@ -11,15 +11,22 @@
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
-    <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.harelshaigal.madamal.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+       <fragment
+        android:id="@+id/navigation_reports_map"
+        android:name="com.harelshaigal.madamal.ui.reportsMap.ReportsMapFragment"
+        android:label="@string/title_reports_map"
+        tools:layout="@layout/fragment_reports_map" />
 
-    <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.harelshaigal.madamal.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+       <fragment
+        android:id="@+id/navigation_reports_list"
+        android:name="com.harelshaigal.madamal.ui.reportslist.ReportsListFragment"
+        android:label="@string/title_reports_list"
+        tools:layout="@layout/fragment_reports_list" />
+
+       <fragment
+        android:id="@+id/navigation_user_profile"
+        android:name="com.harelshaigal.madamal.ui.userProfile.UserProfileFragment"
+        android:label="@string/title_user_profile"
+        tools:layout="@layout/fragment_user_profile" />
+
 </navigation>
