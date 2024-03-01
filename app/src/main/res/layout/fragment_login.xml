@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".ui.login.LoginActivity">
 
     <TextView
         android:id="@+id/login_loginTitle"
@@ -26,12 +26,12 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
+        android:autofillHints="@string/email"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_loginTitle"
-        android:autofillHints="@string/email" />
+        app:layout_constraintTop_toBottomOf="@id/login_loginTitle" />
 
     <EditText
         android:id="@+id/login_passwordEditText"
@@ -40,12 +40,12 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:autofillHints="@string/password"
         android:hint="@string/password"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/login_emailEditText"
-        android:autofillHints="@string/password" />
+        app:layout_constraintTop_toBottomOf="@id/login_emailEditText" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/login_loginButton"
@@ -78,9 +78,9 @@
         android:id="@+id/login_progressBar"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_gravity="center"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_gravity="center"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

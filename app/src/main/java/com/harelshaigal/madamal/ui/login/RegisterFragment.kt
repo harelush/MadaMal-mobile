@@ -1,4 +1,4 @@
-package com.harelshaigal.madamal
+package com.harelshaigal.madamal.ui.login
 
 import android.content.Intent
 import android.net.Uri
@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.harelshaigal.madamal.MainActivity
 import com.harelshaigal.madamal.databinding.FragmentRegisterBinding
 import com.wajahatkarim3.easyvalidation.core.view_ktx.validator
 import kotlinx.coroutines.CoroutineScope
