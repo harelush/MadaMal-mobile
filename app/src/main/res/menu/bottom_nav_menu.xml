@@ -12,9 +12,9 @@
         android:title="@string/title_reports_map" />
 
     <item
-        android:id="@+id/navigation_reports_list"
+        android:id="@+id/navigation_user_reports_list"
         android:icon="@drawable/baseline_format_list_bulleted_24"
-        android:title="@string/title_reports_list" />
+        android:title="@string/title_user_reports_list" />
 
     <item
         android:id="@+id/navigation_user_profile"
