@@ -1,4 +1,4 @@
-package com.harelshaigal.madamal
+package com.harelshaigal.madamal.ui.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.harelshaigal.madamal.MainActivity
 import com.harelshaigal.madamal.databinding.FragmentLoginBinding
 import com.wajahatkarim3.easyvalidation.core.view_ktx.validator
 import kotlinx.coroutines.CoroutineScope
@@ -25,7 +26,7 @@ class LoginFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+            _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
 
