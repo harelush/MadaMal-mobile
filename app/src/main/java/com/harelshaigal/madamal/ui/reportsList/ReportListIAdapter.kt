@@ -5,12 +5,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import com.harelshaigal.madamal.data.Report
 import com.harelshaigal.madamal.databinding.FragmentReportListItemBinding
 
-class ReportListIAdapter(
-    private val values: List<Report>
-) : RecyclerView.Adapter<ReportListIAdapter.ReportViewHolder>() {
+class ReportListIAdapter :  ListAdapter<Report, ReportListIAdapter.ReportViewHolder>(ReportDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReportViewHolder {
         return ReportViewHolder(
@@ -23,10 +22,8 @@ class ReportListIAdapter(
 
     }
 
-    override fun getItemCount(): Int = values.size
-
     override fun onBindViewHolder(holder: ReportViewHolder, position: Int) {
-        val currentReport: Report = values[position]
+        val currentReport: Report = getItem(position)
        holder.bind(currentReport)
     }
 

@@ -5,18 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.harelshaigal.madamal.data.Report
-import com.harelshaigal.madamal.data.reportsList
 import com.harelshaigal.madamal.databinding.FragmentReportsListBinding
 
 class ReportListFragment : Fragment() {
 
-    private  val viewModel by viewModels<ReportsListViewModel> {
-        ReportsListViewModelFactory(this)
-    }
+    private lateinit var viewModel: ReportsListViewModel
+
     private var _binding: FragmentReportsListBinding? = null
     private val binding get() = _binding!!
 
@@ -25,15 +22,19 @@ class ReportListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        viewModel =
+            ViewModelProvider(this)[ReportsListViewModel::class.java] as ReportsListViewModel
+
         _binding = FragmentReportsListBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        val reportAdapter = ReportListIAdapter(reportsList())
+        val reportAdapter = ReportListIAdapter()
 
         val recyclerView: RecyclerView = binding.reportList
         recyclerView.adapter = reportAdapter
 
         viewModel.reportListData.observe(viewLifecycleOwner) {
-//            reportAdapter.(it as MutableList<Report>)
+            reportAdapter.submitList(it as MutableList<Report>)
         }
 
         return root
