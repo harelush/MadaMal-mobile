@@ -31,10 +31,7 @@ class UserReportsListFragment : Fragment() {
         _binding = FragmentUserReportsListBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textUserReportList
-        viewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+
         return root
     }
 
