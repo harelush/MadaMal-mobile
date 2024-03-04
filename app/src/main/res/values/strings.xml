@@ -13,7 +13,7 @@
     <string name="for_sign_in_click_here">Already signed? click here to login</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">בית</string>
-    <string name="title_reports_list">הדיווחים שלי</string>
+    <string name="title_user_reports_list">הדיווחים שלי</string>
     <string name="title_reports_map">מפת הדיווחים</string>
     <string name="title_user_profile">הפרופיל שלי</string>
 </resources>

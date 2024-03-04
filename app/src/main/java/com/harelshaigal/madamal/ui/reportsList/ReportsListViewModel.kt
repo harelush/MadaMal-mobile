@@ -3,10 +3,13 @@ package com.harelshaigal.madamal.ui.reportsList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.harelshaigal.madamal.data.Report
+import com.harelshaigal.madamal.data.reportsList
 
 class ReportsListViewModel : ViewModel() {
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is report list Fragment"
+    private val _reportListData = MutableLiveData<List<Report>>().apply {
+        value = reportsList()
     }
-    val text: LiveData<String> = _text
+
+    val reportListData: LiveData<List<Report>> = _reportListData
 }

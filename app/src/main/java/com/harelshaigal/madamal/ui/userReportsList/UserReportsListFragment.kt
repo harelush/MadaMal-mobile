@@ -1,4 +1,4 @@
-package com.harelshaigal.madamal.ui.reportsList
+package com.harelshaigal.madamal.ui.userReportsList
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -7,13 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.harelshaigal.madamal.databinding.FragmentReportsListBinding
+import com.harelshaigal.madamal.databinding.FragmentUserReportsListBinding
 
-class ReportsListFragment : Fragment() {
+class UserReportsListFragment : Fragment() {
 
-    private lateinit var viewModel: ReportsListViewModel
+    private lateinit var viewModel: UserReportsListViewModel
 
-    private var _binding: FragmentReportsListBinding? = null
+    private var _binding: FragmentUserReportsListBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -26,15 +26,12 @@ class ReportsListFragment : Fragment() {
     ): View {
 
         viewModel =
-            ViewModelProvider(this)[ReportsListViewModel::class.java]
+            ViewModelProvider(this)[UserReportsListViewModel::class.java]
 
-        _binding = FragmentReportsListBinding.inflate(inflater, container, false)
+        _binding = FragmentUserReportsListBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textReportList
-        viewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+
         return root
     }
 
