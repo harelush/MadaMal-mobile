@@ -17,6 +17,9 @@
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge"
         tools:targetApi="31" >
         <activity
+            android:name=".ui.addReport.AddReportActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="false"
             android:label="@string/title_activity_main" />
