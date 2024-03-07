@@ -1,5 +1,6 @@
 package com.harelshaigal.madamal.ui.reportsList
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.harelshaigal.madamal.data.Report
 import com.harelshaigal.madamal.databinding.FragmentReportsListBinding
+import com.harelshaigal.madamal.ui.addReport.AddReportActivity
 
 class ReportListFragment : Fragment() {
 
@@ -43,5 +45,12 @@ class ReportListFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.addReportButton.setOnClickListener {
+            startActivity(Intent(requireContext(), AddReportActivity::class.java))
+        }
     }
 }
