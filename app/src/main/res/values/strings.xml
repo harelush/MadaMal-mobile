@@ -16,4 +16,9 @@
     <string name="title_user_reports_list">הדיווחים שלי</string>
     <string name="title_reports_map">מפת הדיווחים</string>
     <string name="title_user_profile">הפרופיל שלי</string>
+    <string name="open_edit_report_window">open edit report window</string>
+    <string name="open_delete_report_window">open delete report window</string>
+    <string name="report_list_item_display_image">report list item display image</string>
+    <string name="palceholder_date">palceholder date</string>
+    <string name="palceholder_username">palceholder username</string>
 </resources>
