@@ -31,22 +31,22 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/editReport"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="#00FFFFFF"
+                    android:backgroundTint="#00FFFFFF"
                     android:contentDescription="@string/open_edit_report_window"
-                    android:focusable="true"
                     app:srcCompat="@drawable/baseline_edit_24" />
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/deleteReport"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="#00FFFFFF"
+                    android:backgroundTint="#00FFFFFF"
                     android:contentDescription="@string/open_delete_report_window"
-                    android:focusable="true"
                     app:srcCompat="@drawable/baseline_delete_24" />
 
             </LinearLayout>
@@ -55,6 +55,8 @@
                 android:id="@+id/reportHeaderDataLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="#00FFFFFF"
+                android:backgroundTint="#00FFFFFF"
                 android:layoutDirection="rtl"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
