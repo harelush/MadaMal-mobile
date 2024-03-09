@@ -1,10 +1,12 @@
 package com.harelshaigal.madamal.ui.reportsList
 
 import android.content.Context
+import android.content.Intent
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.harelshaigal.madamal.data.Report
 import com.harelshaigal.madamal.databinding.FragmentReportListItemBinding
+import com.harelshaigal.madamal.ui.addReport.AddReportActivity
 import com.harelshaigal.madamal.ui.reportsList.utils.DeleteDialogUtils
 
 class ReportViewHolder(private val context: Context,
@@ -20,6 +22,15 @@ class ReportViewHolder(private val context: Context,
             DeleteDialogUtils.createDeleteDialog(context) {
                 // Perform delete operation here
             }
+        }
+
+        binding.editReport.setOnClickListener {
+            val intent = Intent(context, AddReportActivity::class.java).apply {
+                putExtra("reportId", currentReport?.id)
+                putExtra("content", currentReport?.data)
+                putExtra("imageURL", currentReport?.image)
+            }
+            context.startActivity(intent)
         }
     }
     fun bind(report: Report) {
