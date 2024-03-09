@@ -10,6 +10,6 @@ data class Report (
     val creationDate: Date,
     val data: String,
     val location: Location? = null,
-    @DrawableRes
-    val image: Int? = null,
+//    @DrawableRes
+    val image: String? = null,
 )
