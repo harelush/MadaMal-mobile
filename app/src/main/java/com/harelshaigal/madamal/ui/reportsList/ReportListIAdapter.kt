@@ -1,13 +1,17 @@
 package com.harelshaigal.madamal.ui.reportsList
 
+import android.content.Intent
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.harelshaigal.madamal.R
 import com.harelshaigal.madamal.data.Report
 import com.harelshaigal.madamal.databinding.FragmentReportListItemBinding
+import com.harelshaigal.madamal.ui.addReport.AddReportActivity
 
 class ReportListIAdapter :  ListAdapter<Report, ReportListIAdapter.ReportViewHolder>(ReportDiffCallback) {
 
@@ -23,8 +27,20 @@ class ReportListIAdapter :  ListAdapter<Report, ReportListIAdapter.ReportViewHol
     }
 
     override fun onBindViewHolder(holder: ReportViewHolder, position: Int) {
+        val editButton: Button = holder.itemView.findViewById(R.id.editReport)
+
         val currentReport: Report = getItem(position)
        holder.bind(currentReport)
+
+        editButton.setOnClickListener {
+            val context = holder.itemView.context
+            val intent = Intent(context, AddReportActivity::class.java).apply {
+                putExtra("reportId", currentReport.id)
+                putExtra("content", currentReport.data)
+                putExtra("imageURL", currentReport.image)
+            }
+            context.startActivity(intent)
+        }
     }
 
     class ReportViewHolder(binding: FragmentReportListItemBinding) :
