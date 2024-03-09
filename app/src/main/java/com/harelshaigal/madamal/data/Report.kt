@@ -1,7 +1,6 @@
 package com.harelshaigal.madamal.data
 
 import android.location.Location
-import androidx.annotation.DrawableRes
 import java.util.Date
 
 data class Report (

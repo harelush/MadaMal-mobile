@@ -35,7 +35,7 @@ class AddReportActivity : AppCompatActivity() {
 
     private lateinit var imagePickerLauncher: ActivityResultLauncher<String>
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState)
 
 //        val reportId = intent.getLongExtra("reportId", -1)
         val content = intent.getStringExtra("content")
@@ -43,9 +43,9 @@ class AddReportActivity : AppCompatActivity() {
 
 
         binding = ActivityAddReportBinding.inflate(layoutInflater)
-        setContentView(binding.root);
+        setContentView(binding.root)
 
-        binding.addReportContent.setText(content);
+        binding.addReportContent.setText(content)
         if(imageURL != null){
         binding.addReportImageView.setImageURI(Uri.parse(imageURL))
         }
@@ -81,7 +81,7 @@ class AddReportActivity : AppCompatActivity() {
     private suspend fun saveReport(content: String) {
         val user = Firebase.auth.currentUser
         val uri = selectedImageUri!!
-        val downloadUri: Uri;
+        val downloadUri: Uri
         if(user != null) {
             val fileName = "reportsImages/${user.uid}/reportImage.jpg"
             val ref = Firebase.storage.reference.child(fileName)
