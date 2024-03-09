@@ -37,8 +37,18 @@ class AddReportActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState);
 
+//        val reportId = intent.getLongExtra("reportId", -1)
+        val content = intent.getStringExtra("content")
+        val imageURL = intent.getStringExtra("imageURL")
+
+
         binding = ActivityAddReportBinding.inflate(layoutInflater)
         setContentView(binding.root);
+
+        binding.addReportContent.setText(content);
+        if(imageURL != null){
+        binding.addReportImageView.setImageURI(Uri.parse(imageURL))
+        }
 
         imagePickerLauncher =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
