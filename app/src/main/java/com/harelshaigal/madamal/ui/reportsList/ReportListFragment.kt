@@ -26,7 +26,7 @@ class ReportListFragment : Fragment() {
     ): View {
 
         viewModel =
-            ViewModelProvider(this)[ReportsListViewModel::class.java] as ReportsListViewModel
+            ViewModelProvider(this)[ReportsListViewModel::class.java]
 
         _binding = FragmentReportsListBinding.inflate(inflater, container, false)
         val root: View = binding.root

@@ -1,7 +1,5 @@
 package com.harelshaigal.madamal.data
 
-import android.content.res.Resources
-import java.time.LocalDate
 import java.util.Date
 
 fun reportsList(): List<Report> {
