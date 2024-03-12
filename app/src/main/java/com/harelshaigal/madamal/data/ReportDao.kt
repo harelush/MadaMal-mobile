@@ -5,16 +5,16 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-
+import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface ReportDto {
-    @get:Query("select * from Report")
-    val all: List<Report?>?
+interface ReportDao {
+    @Query("SELECT * FROM Report")
+    fun getAllReports(): Flow<List<Report>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg students: Report?)
+    fun insertReports(vararg reports: Report)
 
     @Delete
-    fun delete(student: Report?)
+    fun deleteReport(report: Report)
 }

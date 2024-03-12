@@ -20,6 +20,12 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments["room.schemaLocation"] = "$projectDir/schemas"
+            }
+        }
     }
 
     buildTypes {
@@ -57,6 +63,7 @@ dependencies {
     val room_version = "2.4.3"
     implementation("androidx.room:room-runtime:$room_version")
     kapt("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:${room_version}")
 
     implementation("com.wajahatkarim:easyvalidation-core:1.0.4")
     implementation("com.wajahatkarim:easyvalidation-toast:1.0.4")

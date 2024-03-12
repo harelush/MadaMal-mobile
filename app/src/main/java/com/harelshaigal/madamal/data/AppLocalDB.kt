@@ -8,7 +8,7 @@ import com.harelshaigal.madamal.MyApplicationSingleton
 
 @Database(entities = [Report::class], version = 1)
 abstract class AppLocalDbRepository : RoomDatabase() {
-    abstract fun reportDto(): ReportDto?
+    abstract fun reportDao(): ReportDao?
 }
 
 
