@@ -1,4 +1,4 @@
-package com.harelshaigal.madamal
+package com.harelshaigal.madamal.ui.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.harelshaigal.madamal.MainActivity
+import com.harelshaigal.madamal.R
 import com.harelshaigal.madamal.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {

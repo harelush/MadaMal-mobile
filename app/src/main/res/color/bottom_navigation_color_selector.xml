@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/colorBottomNavigationItemSelected" android:state_checked="true" />
+<!--     Unselected state -->
+    <item android:color="@color/colorBottomNavigationItemUnselected" android:state_checked="false"/>
+</selector>
