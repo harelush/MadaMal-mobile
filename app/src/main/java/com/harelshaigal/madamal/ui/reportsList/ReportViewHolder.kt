@@ -36,7 +36,6 @@ class ReportViewHolder(private val context: Context,
     fun bind(report: Report) {
         currentReport = report
         ownerIdView.text = report.ownerId.toString()
-        creationDateView.text = report.creationDate.toString()
         dataView.text = report.data
 
     }
