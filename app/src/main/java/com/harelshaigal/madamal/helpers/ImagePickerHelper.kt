@@ -43,12 +43,12 @@ class ImagePickerHelper(fragment: Fragment, private val callback: ImagePickerCal
 
     companion object {
         suspend fun uploadImageToFirebaseStorage(
-            selectedImageUri: Uri,
+            selectedImageUri: Uri?,
             fileName: String,
-            context: Context
+            context: Context?
         ): Uri? {
             val user = Firebase.auth.currentUser
-            return if (user != null) {
+            return if (user != null && selectedImageUri != null) {
                 val ref = Firebase.storage.reference.child(fileName)
                 try {
                     ref.putFile(selectedImageUri).await() // Upload the file
