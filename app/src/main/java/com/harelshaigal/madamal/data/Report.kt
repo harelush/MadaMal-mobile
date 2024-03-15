@@ -1,10 +1,7 @@
 package com.harelshaigal.madamal.data
 
-import android.location.Location
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverter
-import java.util.Date
 
 @Entity
 data class Report (

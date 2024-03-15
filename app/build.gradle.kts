@@ -60,10 +60,10 @@ android {
 
 dependencies {
 
-    val room_version = "2.4.3"
-    implementation("androidx.room:room-runtime:$room_version")
-    kapt("androidx.room:room-compiler:$room_version")
-    implementation("androidx.room:room-ktx:${room_version}")
+    val roomVersion = "2.4.3"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:${roomVersion}")
 
     implementation("com.wajahatkarim:easyvalidation-core:1.0.4")
     implementation("com.wajahatkarim:easyvalidation-toast:1.0.4")
