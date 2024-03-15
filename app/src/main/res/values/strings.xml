@@ -23,4 +23,5 @@
     <string name="report_list_item_display_image">report list item display image</string>
     <string name="palceholder_date">palceholder date</string>
     <string name="palceholder_username">palceholder username</string>
+    <string name="google_map_api_key">AIzaSyB8PT0FJsLc4UmG7bD3BC0I3YUbgOwWr9I</string>
 </resources>
