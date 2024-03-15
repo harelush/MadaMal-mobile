@@ -1,6 +1,5 @@
 package com.harelshaigal.madamal.ui.editUserProfileDialog
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -39,13 +38,21 @@ class EditUserProfileDialogFragment : DialogFragment(), ImagePickerHelper.ImageP
         _binding = FragmentEditUserProfileDialogBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        imagePickerHelper = ImagePickerHelper(this, this)
+
+        return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         binding.userProfileProfileImageView.setOnClickListener {
             imagePickerHelper.openImagePicker()
         }
 
-        imagePickerHelper = ImagePickerHelper(this, this)
-
-        return root
+        binding.editUserButton.setOnClickListener {
+            dismiss()
+        }
     }
 
     override fun onStart() {
@@ -57,6 +64,7 @@ class EditUserProfileDialogFragment : DialogFragment(), ImagePickerHelper.ImageP
             dialog.window!!.setLayout(width, height)
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -64,11 +72,14 @@ class EditUserProfileDialogFragment : DialogFragment(), ImagePickerHelper.ImageP
 
     companion object {
         fun display(fragmentManager: FragmentManager?): EditUserProfileDialogFragment {
-            val exampleDialog = EditUserProfileDialogFragment()
+            val editUserProfileDialogFragment = EditUserProfileDialogFragment()
             if (fragmentManager != null) {
-                exampleDialog.show(fragmentManager, exampleDialog.TAG)
+                editUserProfileDialogFragment.show(
+                    fragmentManager,
+                    editUserProfileDialogFragment.TAG
+                )
             }
-            return exampleDialog
+            return editUserProfileDialogFragment
         }
     }
 
