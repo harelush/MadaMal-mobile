@@ -6,15 +6,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 import com.harelshaigal.madamal.MainActivity
 import com.harelshaigal.madamal.databinding.FragmentRegisterBinding
+import com.harelshaigal.madamal.helpers.ImagePickerHelper
+import com.harelshaigal.madamal.helpers.ToastHelper
 import com.wajahatkarim3.easyvalidation.core.view_ktx.validator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,24 +21,17 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class RegisterFragment : Fragment() {
+class RegisterFragment : Fragment(), ImagePickerHelper.ImagePickerCallback {
 
+    private lateinit var imagePickerHelper: ImagePickerHelper
     private var _binding: FragmentRegisterBinding? = null
     private val auth = Firebase.auth
     private val binding get() = _binding!!
     private var selectedImageUri: Uri? = null
 
-    private lateinit var imagePickerLauncher: ActivityResultLauncher<String>
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        imagePickerLauncher =
-            registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-                uri?.let {
-                    binding.registerProfileImageView.setImageURI(uri)
-                    selectedImageUri = uri
-                }
-            }
+        imagePickerHelper = ImagePickerHelper(this, this)
     }
 
     override fun onCreateView(
@@ -66,7 +58,7 @@ class RegisterFragment : Fragment() {
         }
 
         binding.registerProfileImageView.setOnClickListener {
-            openGalleryForImage()
+            imagePickerHelper.openImagePicker()
         }
     }
 
@@ -77,14 +69,17 @@ class RegisterFragment : Fragment() {
 
             try {
                 auth.createUserWithEmailAndPassword(email, password).await()
-                uploadImageToFirebaseStorage()?.let {
-                    withContext(Dispatchers.Main) {
-                        navigateToMainActivity()
+                val user = Firebase.auth.currentUser
+                val fileName = "images/${user?.uid}/profile.jpg"
+                ImagePickerHelper.uploadImageToFirebaseStorage(selectedImageUri, fileName, context)
+                    ?.let {
+                        withContext(Dispatchers.Main) {
+                            navigateToMainActivity()
+                        }
                     }
-                }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    showToast("Registration failed: ${e.message}")
+                    ToastHelper.showToast("Registration failed: ${e.message}", context)
                 }
             } finally {
                 withContext(Dispatchers.Main) {
@@ -94,7 +89,7 @@ class RegisterFragment : Fragment() {
         } else {
             withContext(Dispatchers.Main) {
                 showProgressBar(false)
-                showToast("Invalid email or password")
+                ToastHelper.showToast("Invalid email or password", context)
             }
         }
     }
@@ -106,37 +101,6 @@ class RegisterFragment : Fragment() {
         return isEmailValid && isPasswordValid
     }
 
-    private suspend fun uploadImageToFirebaseStorage(): Uri? {
-        val user = Firebase.auth.currentUser
-        return if (user != null && selectedImageUri != null) {
-            val uri = selectedImageUri!!
-            val fileName = "images/${user.uid}/profile.jpg"
-            val ref = Firebase.storage.reference.child(fileName)
-            try {
-                ref.putFile(uri).await() // Upload the file
-                val downloadUri = ref.downloadUrl.await()
-                withContext(Dispatchers.Main) {
-                }
-                downloadUri
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    showToast("Upload failed: ${e.message}") // Handle failure, e.g., show a toast
-                }
-                null
-            }
-        } else {
-            withContext(Dispatchers.Main) {
-                showToast("No user logged in or no image selected")
-            }
-            null
-        }
-    }
-
-
-    private fun openGalleryForImage() {
-        imagePickerLauncher.launch("image/*")
-    }
-
     private fun showProgressBar(show: Boolean) {
         binding.registerProgressBar.visibility = if (show) View.VISIBLE else View.GONE
     }
@@ -146,12 +110,14 @@ class RegisterFragment : Fragment() {
         activity?.finish()
     }
 
-    private fun showToast(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun getImageViewForLoad(): ImageView = binding.registerProfileImageView
+
+    override fun selectedImageExtraLogic(uri: Uri?) {
+        uri.also { selectedImageUri = it }
     }
 }

@@ -128,7 +128,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:backgroundTint="#2196F3"
-            android:text="@string/edit_profile_button"
+            android:text="@string/title_edit_user_profile_dialog"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

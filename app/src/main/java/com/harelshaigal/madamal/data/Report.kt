@@ -1,14 +1,16 @@
 package com.harelshaigal.madamal.data
 
-import android.location.Location
-import java.util.Date
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity
 data class Report (
+    @PrimaryKey
     val id: Long,
     val ownerId: Long,
-    val creationDate: Date,
     val data: String,
-    val location: Location? = null,
+    val lat: Double?,
+    val lng: Double?,
 //    @DrawableRes
     val image: String? = null,
 )

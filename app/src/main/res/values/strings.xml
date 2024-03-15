@@ -16,7 +16,8 @@
     <string name="title_user_reports_list">הדיווחים שלי</string>
     <string name="title_reports_map">מפת הדיווחים</string>
     <string name="title_user_profile">הפרופיל שלי</string>
-    <string name="edit_profile_button">ערוך פרופיל</string>
+    <string name="title_edit_user_profile_dialog">ערוך פרופיל</string>
+    <string name="edit_user_profile_dialog_button">שמור שינויים</string>
     <string name="open_edit_report_window">open edit report window</string>
     <string name="open_delete_report_window">open delete report window</string>
     <string name="report_list_item_display_image">report list item display image</string>

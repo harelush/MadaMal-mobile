@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.harelshaigal.madamal.databinding.FragmentUserProfileBinding
+import com.harelshaigal.madamal.ui.editUserProfileDialog.EditUserProfileDialogFragment
 
 class UserProfileFragment : Fragment() {
 
@@ -29,6 +30,10 @@ class UserProfileFragment : Fragment() {
 
         _binding = FragmentUserProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        binding.editUserButton.setOnClickListener {
+            EditUserProfileDialogFragment.display(getParentFragmentManager())
+        }
 
 
         return root
