@@ -3,7 +3,7 @@ package com.harelshaigal.madamal.data
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.harelshaigal.madamal.MyApplicationSingleton
+import com.harelshaigal.madamal.MadamalApplication
 
 
 @Database(entities = [Report::class], version = 1)
@@ -14,7 +14,7 @@ abstract class AppLocalDbRepository : RoomDatabase() {
 
 object AppLocalDb {
     var db = Room.databaseBuilder(
-        MyApplicationSingleton.getContext(),
+        MadamalApplication.context,
         AppLocalDbRepository::class.java,
         "dbFileName.db"
     )

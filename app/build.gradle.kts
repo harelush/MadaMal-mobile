@@ -60,11 +60,12 @@ android {
 
 dependencies {
 
-    val room_version = "2.4.3"
-    implementation("androidx.room:room-runtime:$room_version")
-    kapt("androidx.room:room-compiler:$room_version")
-    implementation("androidx.room:room-ktx:${room_version}")
+    val roomVersion = "2.4.3"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:${roomVersion}")
 
+    implementation("com.squareup.picasso:picasso:2.8")
     implementation("com.wajahatkarim:easyvalidation-core:1.0.4")
     implementation("com.wajahatkarim:easyvalidation-toast:1.0.4")
     implementation("androidx.core:core-ktx:1.12.0")
@@ -93,6 +94,7 @@ dependencies {
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.activity:activity:1.8.2")
+    implementation("androidx.fragment:fragment-ktx:1.5.6")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
