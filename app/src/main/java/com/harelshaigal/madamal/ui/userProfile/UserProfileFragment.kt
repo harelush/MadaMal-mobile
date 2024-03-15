@@ -25,7 +25,6 @@ class UserProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-
         viewModel =
             ViewModelProvider(this)[UserProfileViewModel::class.java]
 
@@ -33,16 +32,11 @@ class UserProfileFragment : Fragment() {
         val root: View = binding.root
 
         binding.editUserButton.setOnClickListener {
-            showDialog()
+            EditUserProfileDialogFragment.display(getParentFragmentManager())
         }
 
 
         return root
-    }
-
-    private fun showDialog() {
-        val dialog = EditUserProfileDialogFragment()
-        dialog.show(getParentFragmentManager(), "FullScreenDialogFragment")
     }
 
     override fun onDestroyView() {

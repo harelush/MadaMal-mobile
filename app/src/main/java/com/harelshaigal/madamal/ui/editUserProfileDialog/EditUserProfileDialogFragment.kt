@@ -1,26 +1,24 @@
 package com.harelshaigal.madamal.ui.editUserProfileDialog
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.harelshaigal.madamal.databinding.FragmentEditUserProfileDialogBinding
+import com.harelshaigal.madamal.helpers.ImagePickerHelper
 
 
-class EditUserProfileDialogFragment : DialogFragment() {
+class EditUserProfileDialogFragment : DialogFragment(), ImagePickerHelper.ImagePickerCallback {
+
+    private lateinit var imagePickerHelper: ImagePickerHelper
 
     val TAG = "edit_user_profile_dialog"
 
-    fun display(fragmentManager: FragmentManager?): EditUserProfileDialogFragment {
-        val exampleDialog = EditUserProfileDialogFragment()
-        if (fragmentManager != null) {
-            exampleDialog.show(fragmentManager, TAG)
-        }
-        return exampleDialog
-    }
     private lateinit var viewModel: EditUserProfileDialogViewModel
 
     private var _binding: FragmentEditUserProfileDialogBinding? = null
@@ -41,6 +39,11 @@ class EditUserProfileDialogFragment : DialogFragment() {
         _binding = FragmentEditUserProfileDialogBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        binding.userProfileProfileImageView.setOnClickListener {
+            imagePickerHelper.openImagePicker()
+        }
+
+        imagePickerHelper = ImagePickerHelper(this, this)
 
         return root
     }
@@ -57,6 +60,20 @@ class EditUserProfileDialogFragment : DialogFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        fun display(fragmentManager: FragmentManager?): EditUserProfileDialogFragment {
+            val exampleDialog = EditUserProfileDialogFragment()
+            if (fragmentManager != null) {
+                exampleDialog.show(fragmentManager, exampleDialog.TAG)
+            }
+            return exampleDialog
+        }
+    }
+
+    override fun getImageViewForLoad(): ImageView {
+        return binding.userProfileProfileImageView
     }
 
 }

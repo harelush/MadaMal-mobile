@@ -65,6 +65,7 @@ dependencies {
     kapt("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:${roomVersion}")
 
+    implementation("com.squareup.picasso:picasso:2.8")
     implementation("com.wajahatkarim:easyvalidation-core:1.0.4")
     implementation("com.wajahatkarim:easyvalidation-toast:1.0.4")
     implementation("androidx.core:core-ktx:1.12.0")
