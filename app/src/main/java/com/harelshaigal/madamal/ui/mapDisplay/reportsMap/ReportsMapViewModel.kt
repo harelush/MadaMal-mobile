@@ -1,4 +1,4 @@
-package com.harelshaigal.madamal.ui.reportsMap
+package com.harelshaigal.madamal.ui.mapDisplay.reportsMap
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

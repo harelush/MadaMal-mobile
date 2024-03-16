@@ -13,7 +13,7 @@
 
        <fragment
         android:id="@+id/navigation_reports_map"
-        android:name="com.harelshaigal.madamal.ui.reportsMap.ReportsMapFragment"
+        android:name="com.harelshaigal.madamal.ui.mapDisplay.reportsMap.ReportsMapFragment"
         android:label="@string/title_reports_map"
         tools:layout="@layout/fragment_reports_map" />
 
