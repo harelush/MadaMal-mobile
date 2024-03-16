@@ -1,4 +1,4 @@
-package com.harelshaigal.madamal.ui.reportsMap
+package com.harelshaigal.madamal.ui.mapDisplay.reportsMap
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +12,7 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.harelshaigal.madamal.databinding.FragmentReportsMapBinding
+import com.harelshaigal.madamal.ui.mapDisplay.reportMapDisplay.ReportMapDisplayFragment
 
 class ReportsMapFragment : Fragment(), OnMapReadyCallback {
 
@@ -45,6 +46,14 @@ class ReportsMapFragment : Fragment(), OnMapReadyCallback {
         mapView.getMapAsync(this)
 
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.testBottomSheet.setOnClickListener {
+            ReportMapDisplayFragment.display(getParentFragmentManager())
+        }
     }
 
     override fun onResume() {

@@ -1,4 +1,4 @@
-package com.harelshaigal.madamal
+package com.harelshaigal.madamal.application
 
 import android.annotation.SuppressLint
 import android.app.Application
