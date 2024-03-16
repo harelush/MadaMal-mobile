@@ -4,14 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.harelshaigal.madamal.data.Report
 import com.harelshaigal.madamal.databinding.FragmentReportMapDisplayBinding
-import com.harelshaigal.madamal.ui.reportDialogs.reportDialogForm.ReportDialogFormFragment
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 class ReportMapDisplayFragment : BottomSheetDialogFragment() {
 
