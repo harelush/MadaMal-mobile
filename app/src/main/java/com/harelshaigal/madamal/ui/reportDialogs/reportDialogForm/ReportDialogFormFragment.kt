@@ -1,4 +1,4 @@
-package com.harelshaigal.madamal.ui.reportDialogForm
+package com.harelshaigal.madamal.ui.reportDialogs.reportDialogForm
 
 import android.net.Uri
 import android.os.Bundle
@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.harelshaigal.madamal.R
 import com.harelshaigal.madamal.data.Report
 import com.harelshaigal.madamal.databinding.FragmentReportDialogFormBinding
 import com.harelshaigal.madamal.helpers.ImagePickerHelper
@@ -98,12 +99,15 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
         val content = arguments?.getString("content")
         val imageURL = arguments?.getString("imageURL")
 
-        if (content != null) {
-            binding.addReportContent.setText(content)
-        }
+        if (content != null || imageURL != null) {
+            binding.reportDialogTitle.text = getString(R.string.title_edit_report_dialog)
+            if (content != null) {
+                binding.addReportContent.setText(content)
+            }
 
-        if (imageURL != null) {
-            Picasso.get().load(Uri.parse(imageURL)).into(binding.addReportImageView)
+            if (imageURL != null) {
+                Picasso.get().load(Uri.parse(imageURL)).into(binding.addReportImageView)
+            }
         }
     }
 

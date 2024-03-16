@@ -1,4 +1,4 @@
-package com.harelshaigal.madamal.ui.reportDialogForm
+package com.harelshaigal.madamal.ui.reportDialogs.reportDialogForm
 
 import androidx.lifecycle.ViewModel
 

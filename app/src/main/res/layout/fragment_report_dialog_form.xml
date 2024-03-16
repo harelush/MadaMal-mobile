@@ -6,45 +6,76 @@
     android:layout_height="match_parent"
     android:layout_margin="16dp"
     android:foregroundTint="#6750A3"
-    tools:context=".ui.reportDialogForm.ReportDialogFormFragment">
+    tools:context=".ui.reportDialogs.reportDialogForm.ReportDialogFormFragment">
 
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/addReport_content_layout"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:hint="Report Content"
-        app:boxStrokeWidth="2dp"
-        app:boxStrokeWidthFocused="2dp"
-        app:endIconMode="none"
-        app:hintEnabled="true"
-        app:layout_constraintBottom_toTopOf="@id/addReport_imageView"
+    <TextView
+        android:id="@+id/reportDialogTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="@string/title_add_report_dialog"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintBottom_toTopOf="@+id/reportInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/addReport_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="text"
-            android:textColor="@color/black" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <ImageView
-        android:id="@+id/addReport_imageView"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_margin="16dp"
-        android:contentDescription="@string/profile_pic"
-        android:src="@drawable/default_doctor_image"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/reportInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
         app:layout_constraintBottom_toTopOf="@id/saveButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addReport_content_layout" />
+        app:layout_constraintTop_toBottomOf="@+id/reportDialogTitle">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/addReport_content_layout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/report_data_input"
+            app:boxStrokeWidth="2dp"
+            app:boxStrokeWidthFocused="2dp"
+            app:endIconMode="none"
+            app:hintEnabled="true"
+            app:layout_constraintBottom_toTopOf="@id/addReport_imageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:singleLine="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/addReport_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textMultiLine"
+                android:maxLines="5"
+                android:textColor="@color/black" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <ImageView
+            android:id="@+id/addReport_imageView"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/profile_pic"
+            android:src="@drawable/default_doctor_image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/addReport_content_layout" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/saveButton"
@@ -55,10 +86,8 @@
         android:backgroundTint="#FF6750A3"
         android:text="@string/edit_user_profile_dialog_button"
         android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/addReport_imageView" />
-
-
-
+        app:layout_constraintTop_toBottomOf="@id/reportInputLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,9 +1,9 @@
-package com.harelshaigal.madamal.ui.reportsList.utils
+package com.harelshaigal.madamal.ui.reportDialogs
 
 import android.content.Context
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-object DeleteDialogUtils {
+object DeleteReportDialog {
     fun createDeleteDialog(context: Context, onConfirm: () -> Unit) {
         MaterialAlertDialogBuilder(context)
             .setTitle("מחיקת דיווח")

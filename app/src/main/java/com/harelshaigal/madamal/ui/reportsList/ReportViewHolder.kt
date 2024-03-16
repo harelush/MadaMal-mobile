@@ -6,8 +6,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.harelshaigal.madamal.data.Report
 import com.harelshaigal.madamal.databinding.FragmentReportListItemBinding
-import com.harelshaigal.madamal.ui.reportDialogForm.ReportDialogFormFragment
-import com.harelshaigal.madamal.ui.reportsList.utils.DeleteDialogUtils
+import com.harelshaigal.madamal.ui.reportDialogs.reportDialogForm.ReportDialogFormFragment
+import com.harelshaigal.madamal.ui.reportDialogs.DeleteReportDialog
 
 class ReportViewHolder(
     private val context: Context,
@@ -22,7 +22,7 @@ class ReportViewHolder(
 
     init {
         binding.deleteReport.setOnClickListener {
-            DeleteDialogUtils.createDeleteDialog(context) {
+            DeleteReportDialog.createDeleteDialog(context) {
                 // Perform delete operation here
             }
         }

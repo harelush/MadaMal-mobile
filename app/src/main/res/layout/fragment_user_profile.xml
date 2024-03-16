@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.userProfile.UserProfileFragment">
+    tools:context=".ui.userDispaly.userProfile.UserProfileFragment">
 
     <ImageView
         android:id="@+id/userProfile_headerImageView"

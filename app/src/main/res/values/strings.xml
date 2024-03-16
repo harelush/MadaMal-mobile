@@ -17,6 +17,8 @@
     <string name="title_reports_map">מפת הדיווחים</string>
     <string name="title_user_profile">הפרופיל שלי</string>
     <string name="title_edit_user_profile_dialog">ערוך פרופיל</string>
+    <string name="title_edit_report_dialog">ערוך דיווח</string>
+    <string name="title_add_report_dialog">הוסף דיווח</string>
     <string name="edit_user_profile_dialog_button">שמור שינויים</string>
     <string name="open_edit_report_window">open edit report window</string>
     <string name="open_delete_report_window">open delete report window</string>
@@ -24,4 +26,5 @@
     <string name="palceholder_date">palceholder date</string>
     <string name="palceholder_username">palceholder username</string>
     <string name="google_map_api_key">AIzaSyB8PT0FJsLc4UmG7bD3BC0I3YUbgOwWr9I</string>
+    <string name="report_data_input">פרטי הדיווח</string>
 </resources>

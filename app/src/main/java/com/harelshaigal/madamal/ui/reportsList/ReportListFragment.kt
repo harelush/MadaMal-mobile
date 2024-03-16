@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.harelshaigal.madamal.data.Report
 import com.harelshaigal.madamal.databinding.FragmentReportsListBinding
-import com.harelshaigal.madamal.ui.reportDialogForm.ReportDialogFormFragment
+import com.harelshaigal.madamal.ui.reportDialogs.reportDialogForm.ReportDialogFormFragment
 
 class ReportListFragment : Fragment() {
 

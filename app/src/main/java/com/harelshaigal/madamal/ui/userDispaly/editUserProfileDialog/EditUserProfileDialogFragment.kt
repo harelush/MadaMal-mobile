@@ -1,4 +1,4 @@
-package com.harelshaigal.madamal.ui.editUserProfileDialog
+package com.harelshaigal.madamal.ui.userDispaly.editUserProfileDialog
 
 import android.os.Bundle
 import android.view.LayoutInflater
