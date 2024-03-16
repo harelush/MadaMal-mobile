@@ -1,4 +1,4 @@
-package com.harelshaigal.madamal.ui.editUserProfileDialog
+package com.harelshaigal.madamal.ui.userDispaly.editUserProfileDialog
 
 import androidx.lifecycle.ViewModel
 

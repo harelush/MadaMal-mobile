@@ -1,4 +1,4 @@
-package com.harelshaigal.madamal.ui.userProfile
+package com.harelshaigal.madamal.ui.userDispaly.userProfile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -34,9 +34,6 @@
             android:value="@string/google_map_api_key" />
 
         <activity
-            android:name=".ui.addReport.AddReportActivity"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="false"
             android:label="@string/title_activity_main" />

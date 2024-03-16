@@ -25,7 +25,7 @@
 
        <fragment
         android:id="@+id/navigation_user_profile"
-        android:name="com.harelshaigal.madamal.ui.userProfile.UserProfileFragment"
+        android:name="com.harelshaigal.madamal.ui.userDispaly.userProfile.UserProfileFragment"
         android:label="@string/title_user_profile"
         tools:layout="@layout/fragment_user_profile" />
 

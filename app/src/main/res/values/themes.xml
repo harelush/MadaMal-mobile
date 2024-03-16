@@ -6,8 +6,9 @@
         <item name="itemIconTint">@color/bottom_navigation_color_selector</item>
         <item name="itemTextColor">@color/bottom_navigation_color_selector</item>
     </style>
-    <style name="AppTheme.FullScreenDialog" parent="Theme.MaterialComponents.Light.Dialog">
+    <style name="AppTheme.FullScreenDialog" parent="ThemeOverlay.MaterialComponents.MaterialCalendar.Fullscreen">
         <item name="android:windowIsFloating">false</item>
+
         <item name="android:windowBackground">@android:color/white</item>
     </style>
 </resources>

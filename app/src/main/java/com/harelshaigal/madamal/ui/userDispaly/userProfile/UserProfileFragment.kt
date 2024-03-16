@@ -1,4 +1,4 @@
-package com.harelshaigal.madamal.ui.userProfile
+package com.harelshaigal.madamal.ui.userDispaly.userProfile
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.harelshaigal.madamal.databinding.FragmentUserProfileBinding
-import com.harelshaigal.madamal.ui.editUserProfileDialog.EditUserProfileDialogFragment
+import com.harelshaigal.madamal.ui.userDispaly.editUserProfileDialog.EditUserProfileDialogFragment
 
 class UserProfileFragment : Fragment() {
 

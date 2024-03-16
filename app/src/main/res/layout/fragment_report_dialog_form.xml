@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.userDispaly.editUserProfileDialog.EditUserProfileDialogFragment">
+    android:foregroundTint="#6750A3"
+    tools:context=".ui.reportDialogs.reportDialogForm.ReportDialogFormFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/dialogAppBar"
@@ -30,88 +32,82 @@
                 app:tint="@color/black" />
 
             <TextView
-                android:id="@+id/userProfileTitle"
+                android:id="@+id/reportDialogTitle"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="20dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="@string/title_edit_user_profile_dialog"
+                android:text="@string/title_add_report_dialog"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
                 android:textColor="@color/black" />
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/userDataLayout"
+        android:id="@+id/reportInputLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="32dp"
         android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@id/editUserButton"
+        app:layout_constraintBottom_toTopOf="@id/saveButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogAppBar">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/fullNameDisplayLayout"
+            android:id="@+id/addReport_content_layout"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginBottom="24dp"
-            android:hint="@string/full_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/report_data_input"
             app:boxStrokeWidth="2dp"
             app:boxStrokeWidthFocused="2dp"
             app:endIconMode="none"
             app:hintEnabled="true"
-            app:layout_constraintBottom_toTopOf="@id/userProfile_profileImageView"
+            app:layout_constraintBottom_toTopOf="@id/addReport_imageView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/userProfile_profileImageView">
+            app:layout_constraintTop_toTopOf="parent"
+            app:singleLine="false">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/userProfile_fullNameText"
+                android:id="@+id/addReport_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="text"
-                android:text="@string/full_name"
+                android:inputType="textMultiLine"
+                android:maxLines="5"
                 android:textColor="@color/black" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
+
         <ImageView
-            android:id="@+id/userProfile_profileImageView"
+            android:id="@+id/addReport_imageView"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginEnd="16dp"
+            android:layout_margin="16dp"
             android:contentDescription="@string/profile_pic"
             android:src="@drawable/default_doctor_image"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fullNameDisplayLayout" />
+            app:layout_constraintTop_toBottomOf="@id/addReport_content_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/editUserButton"
+        android:id="@+id/saveButton"
         style="@style/Widget.Material3.Button"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:layout_marginBottom="32dp"
-        android:backgroundTint="#2196F3"
+        android:backgroundTint="#FF6750A3"
         android:text="@string/edit_user_profile_dialog_button"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userDataLayout"
-        app:layout_constraintVertical_bias="1.0" />
-
-
+        app:layout_constraintTop_toBottomOf="@id/reportInputLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>
