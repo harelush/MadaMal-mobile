@@ -71,15 +71,12 @@ class EditUserProfileDialogFragment : DialogFragment(), ImagePickerHelper.ImageP
     }
 
     companion object {
-        fun display(fragmentManager: FragmentManager?): EditUserProfileDialogFragment {
+        fun display(fragmentManager: FragmentManager) {
             val editUserProfileDialogFragment = EditUserProfileDialogFragment()
-            if (fragmentManager != null) {
-                editUserProfileDialogFragment.show(
-                    fragmentManager,
-                    editUserProfileDialogFragment.TAG
-                )
-            }
-            return editUserProfileDialogFragment
+            editUserProfileDialogFragment.show(
+                fragmentManager,
+                editUserProfileDialogFragment.TAG
+            )
         }
     }
 

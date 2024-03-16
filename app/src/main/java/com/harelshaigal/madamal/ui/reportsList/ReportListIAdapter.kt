@@ -2,11 +2,12 @@ package com.harelshaigal.madamal.ui.reportsList
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.ListAdapter
 import com.harelshaigal.madamal.data.Report
 import com.harelshaigal.madamal.databinding.FragmentReportListItemBinding
 
-class ReportListIAdapter : ListAdapter<Report, ReportViewHolder>(ReportDiffCallback()) {
+class ReportListIAdapter(private val fragmentManager: FragmentManager) : ListAdapter<Report, ReportViewHolder>(ReportDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReportViewHolder {
         val binding = FragmentReportListItemBinding.inflate(
@@ -16,7 +17,7 @@ class ReportListIAdapter : ListAdapter<Report, ReportViewHolder>(ReportDiffCallb
         )
 
         return ReportViewHolder(
-            parent.context, binding
+            parent.context, binding, fragmentManager
         )
 
     }
