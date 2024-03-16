@@ -6,31 +6,52 @@
     android:layout_height="match_parent"
     tools:context=".ui.userDispaly.editUserProfileDialog.EditUserProfileDialogFragment">
 
-    <TextView
-        android:id="@+id/userProfileTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:text="@string/title_edit_user_profile_dialog"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toTopOf="@+id/userDataLayout"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/dialogAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#3F51B5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/button_close"
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/title_edit_user_profile_dialog"
+                app:srcCompat="@drawable/baseline_close_24"
+                app:tint="@color/black" />
+
+            <TextView
+                android:id="@+id/userProfileTitle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="20dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@string/title_edit_user_profile_dialog"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+                android:textColor="@color/black" />
+        </LinearLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/userDataLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_margin="32dp"
         android:gravity="center"
         app:layout_constraintBottom_toTopOf="@id/editUserButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userProfileTitle">
+        app:layout_constraintTop_toBottomOf="@+id/dialogAppBar">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/fullNameDisplayLayout"

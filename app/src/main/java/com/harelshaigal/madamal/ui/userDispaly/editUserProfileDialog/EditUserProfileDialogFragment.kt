@@ -46,6 +46,10 @@ class EditUserProfileDialogFragment : DialogFragment(), ImagePickerHelper.ImageP
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.buttonClose.setOnClickListener {
+            dismiss()
+        }
+
         binding.userProfileProfileImageView.setOnClickListener {
             imagePickerHelper.openImagePicker()
         }

@@ -66,6 +66,10 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.buttonClose.setOnClickListener {
+            dismiss()
+        }
+
         binding.addReportImageView.setOnClickListener {
             imagePickerHelper.openImagePicker()
         }
