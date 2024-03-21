@@ -9,8 +9,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.harelshaigal.madamal.MainActivity
+import com.harelshaigal.madamal.data.User
 import com.harelshaigal.madamal.databinding.FragmentRegisterBinding
 import com.harelshaigal.madamal.helpers.ImagePickerHelper
 import com.harelshaigal.madamal.helpers.ToastHelper
@@ -66,23 +69,18 @@ class RegisterFragment : Fragment(), ImagePickerHelper.ImagePickerCallback {
         if (validateEmailAndPassword()) {
             val email = binding.registerEmailEditText.text.toString().trim()
             val password = binding.registerPasswordEditText.text.toString().trim()
+            val fullName = binding.registerFullNameEditText.text.toString().trim()
 
             try {
-                auth.createUserWithEmailAndPassword(email, password).await()
-                val user = Firebase.auth.currentUser
-                val fileName = "images/${user?.uid}/profile.jpg"
-                ImagePickerHelper.uploadImageToFirebaseStorage(selectedImageUri, fileName, context)
-                    ?.let {
-                        withContext(Dispatchers.Main) {
-                            navigateToMainActivity()
-                        }
-                    }
+                auth.createUserWithEmailAndPassword(email, password)
+                    .await().user?.let { firebaseUser ->
+                    val user = User(uid = firebaseUser.uid, fullName = fullName, email = email)
+                    // Save the user info to Firestore
+                    saveUserToFirestore(user)
+                }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     ToastHelper.showToast("Registration failed: ${e.message}", context)
-                }
-            } finally {
-                withContext(Dispatchers.Main) {
                     showProgressBar(false)
                 }
             }
@@ -90,6 +88,27 @@ class RegisterFragment : Fragment(), ImagePickerHelper.ImagePickerCallback {
             withContext(Dispatchers.Main) {
                 showProgressBar(false)
                 ToastHelper.showToast("Invalid email or password", context)
+            }
+        }
+    }
+
+    private suspend fun saveUserToFirestore(user: User) {
+        try {
+            val firestore = FirebaseFirestore.getInstance()
+            firestore.collection("users").document(user.uid!!).set(user).await()
+            selectedImageUri?.let { uri ->
+                val storageRef =
+                    FirebaseStorage.getInstance().reference.child("images/${user.uid}/profile.jpg")
+                storageRef.putFile(uri).await()
+            }
+            withContext(Dispatchers.Main) {
+                navigateToMainActivity()
+                showProgressBar(false)
+            }
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                ToastHelper.showToast("Failed to save user data: ${e.message}", context)
+                showProgressBar(false)
             }
         }
     }

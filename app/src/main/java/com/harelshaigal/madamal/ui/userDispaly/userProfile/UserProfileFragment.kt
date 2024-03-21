@@ -1,13 +1,15 @@
 package com.harelshaigal.madamal.ui.userDispaly.userProfile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.harelshaigal.madamal.databinding.FragmentUserProfileBinding
-import com.harelshaigal.madamal.ui.userDispaly.editUserProfileDialog.EditUserProfileDialogFragment
 
 class UserProfileFragment : Fragment() {
 
@@ -32,7 +34,18 @@ class UserProfileFragment : Fragment() {
         val root: View = binding.root
 
         binding.editUserButton.setOnClickListener {
-            EditUserProfileDialogFragment.display(getParentFragmentManager())
+//            EditUserProfileDialogFragment.display(getParentFragmentManager())
+            val db = Firebase.firestore
+            val city = hashMapOf(
+                "name" to "Los Angeles",
+                "state" to "CA",
+                "country" to "USA",
+            )
+
+            db.collection("cities").document("LA")
+                .set(city)
+                .addOnSuccessListener { Log.d("harelush", "DocumentSnapshot successfully written!") }
+                .addOnFailureListener { e -> Log.w("harelush", "Error writing document", e) }
         }
 
 
