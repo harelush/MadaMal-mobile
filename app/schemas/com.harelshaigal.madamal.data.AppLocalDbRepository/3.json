@@ -1,12 +1,12 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 1,
-    "identityHash": "e88f4053914a640dbf2900de3785b70b",
+    "version": 3,
+    "identityHash": "9e0f9bac22676be929eefaae9079dc67",
     "entities": [
       {
         "tableName": "Report",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `ownerId` INTEGER NOT NULL, `data` TEXT NOT NULL, `lat` REAL, `lng` REAL, `image` TEXT, `lastUpdated` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `userId` TEXT NOT NULL, `data` TEXT NOT NULL, `lat` REAL, `lng` REAL, `image` TEXT, `lastUpdated` INTEGER)",
         "fields": [
           {
             "fieldPath": "id",
@@ -15,9 +15,9 @@
             "notNull": true
           },
           {
-            "fieldPath": "ownerId",
-            "columnName": "ownerId",
-            "affinity": "INTEGER",
+            "fieldPath": "userId",
+            "columnName": "userId",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -55,7 +55,7 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [],
         "foreignKeys": []
@@ -64,7 +64,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e88f4053914a640dbf2900de3785b70b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9e0f9bac22676be929eefaae9079dc67')"
     ]
   }
 }
