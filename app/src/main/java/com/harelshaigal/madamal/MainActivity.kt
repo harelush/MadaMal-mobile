@@ -8,6 +8,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.harelshaigal.madamal.data.AppLocalDb
 import com.harelshaigal.madamal.data.Report
+import com.harelshaigal.madamal.data.reportsList
 import com.harelshaigal.madamal.databinding.ActivityMainBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -37,23 +38,22 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         // TODO: (Gal): remove
-        // DB access
-//        val report = Report(
-//            id = 2, // Set the id according to your logic
-//            ownerId = 123, // Set the ownerId according to your logic
-//            data = "HARELUSH data",
-//            lat = 0.0, // Set the latitude according to your logic
-//            lng = 0.0, // Set the longitude according to your logic
-//            image = "sample_image.jpg" // Set the image path according to your logic
-//        )
-//
-//        // Insert the report into the database using a coroutine
-//        GlobalScope.launch(Dispatchers.IO) {
-//            reportDao.insertReports(report) // Corrected to insertReports(vararg reports: Report)
-//            // Fetch all reports from the database
+        val report = Report(
+            id = 2, // Set the id according to your logic
+            ownerId = 123, // Set the ownerId according to your logic
+            data = "HARELUSH data",
+            lat = 0.0, // Set the latitude according to your logic
+            lng = 0.0, // Set the longitude according to your logic
+            image = "sample_image.jpg" // Set the image path according to your logic
+        )
+
+        // Insert the report into the database using a coroutine
+        GlobalScope.launch(Dispatchers.IO) {
+            reportDao.insertReports(reportsList()) // Corrected to insertReports(vararg reports: Report)
+            // Fetch all reports from the database
 //            val allReports = reportDao.getAllReports()
-//            println("All reports:")
+            println("All reports:")
 //            allReports.collect { Log.d("SHAY", it.toString()) }
-//        }
+        }
     }
 }

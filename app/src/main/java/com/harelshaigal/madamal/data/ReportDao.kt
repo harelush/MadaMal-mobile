@@ -1,19 +1,22 @@
 package com.harelshaigal.madamal.data
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ReportDao {
     @Query("SELECT * FROM Report")
-    fun getAllReports(): Flow<List<Report>>
+    fun getAllReports(): LiveData<List<Report>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertReports(vararg reports: Report)
+    fun insertReport(vararg report: Report)
+
+    @Insert
+    fun insertReports(reports: List<Report>)
 
     @Delete
     fun deleteReport(report: Report)

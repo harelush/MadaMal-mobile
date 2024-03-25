@@ -34,7 +34,7 @@ class ReportListFragment : Fragment() {
         val recyclerView: RecyclerView = binding.reportList
         recyclerView.adapter = reportAdapter
 
-        viewModel.reportListData.observe(viewLifecycleOwner) {
+        viewModel.reports.observe(viewLifecycleOwner) {
             reportAdapter.submitList(it as MutableList<Report>)
         }
 
