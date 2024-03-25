@@ -34,14 +34,27 @@ class ReportRepository() {
         }
     }
 
+    private fun List<ReportDto>.toReportEntities(): List<Report> {
+        return this.map { dto ->
+            Report(
+                userId = dto.userId,
+                data = dto.data,
+                lat = dto.lat,
+                lng = dto.lng,
+                image = dto.image,
+                lastUpdated = dto.lastUpdated
+            )
+        }
+    }
+
     private fun handleFirebaseSuccess(documents: QuerySnapshot) {
         if (documents.isEmpty) return
-        val reports = documents.toObjects(Report::class.java)
+        val reportDtos = documents.toObjects(ReportDto::class.java) // Fetching DTOs
+        val reports = reportDtos.toReportEntities() // Mapping DTOs to Entities
         repositoryScope.launch {
             insertReports(reports)
         }
     }
-
 
     private suspend fun insertReports(reports: List<Report>) {
         withContext(Dispatchers.IO) {
@@ -57,22 +70,60 @@ class ReportRepository() {
 
     suspend fun insertReport(report: Report) {
         withContext(Dispatchers.IO) {
+            val reportWithUpdateTime = report.copy(
+                lastUpdated = System.currentTimeMillis(),
+            )
+
             val id = reportDao.insertReport(report)
-            val updatedReport = report.copy(id = id)
+            val updatedReport = reportWithUpdateTime.copy(id = id)
             saveReportToFirebase(updatedReport)
         }
     }
 
+
     private fun saveReportToFirebase(report: Report) {
-        val reportData = report.toMap()
         db.collection("reports")
             .document(report.id.toString())
-            .set(reportData)
+            .set(report)
             .addOnSuccessListener {
                 Log.d("ReportRepository", "Report saved with ID: ${report.id}")
             }
             .addOnFailureListener { e ->
                 Log.w("ReportRepository", "Error adding report", e)
+            }
+    }
+
+    fun getReportById(id: Long): LiveData<Report> {
+        return reportDao.getReportById(id)
+    }
+
+    fun getReportsByUserId(userId: String): LiveData<List<Report>> {
+        return reportDao.getReportsByUserId(userId)
+    }
+
+    fun deleteReportById(id: Long) {
+        repositoryScope.launch {
+            reportDao.deleteReportById(id)
+            deleteReportFromFirebase(id)
+        }
+    }
+
+    suspend fun editReport(report: Report) {
+        withContext(Dispatchers.IO) {
+            reportDao.updateReport(report)
+            saveReportToFirebase(report) // Assuming you want to update the report in Firebase as well
+        }
+    }
+
+    private fun deleteReportFromFirebase(id: Long) {
+        db.collection("reports")
+            .document(id.toString())
+            .delete()
+            .addOnSuccessListener {
+                Log.d("ReportRepository", "Report successfully deleted from Firebase with ID: $id")
+            }
+            .addOnFailureListener { e ->
+                Log.w("ReportRepository", "Error deleting report from Firebase", e)
             }
     }
 }

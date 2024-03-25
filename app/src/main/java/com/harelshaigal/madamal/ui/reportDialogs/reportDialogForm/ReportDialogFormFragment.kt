@@ -2,7 +2,6 @@ package com.harelshaigal.madamal.ui.reportDialogs.reportDialogForm
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +9,10 @@ import android.widget.ImageView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.harelshaigal.madamal.R
 import com.harelshaigal.madamal.data.Report
@@ -144,48 +141,36 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
             val fileName = "reportsImages/${user.uid}/reportImage.jpg"
 
             try {
-//                val downloadUri: Uri? = ImagePickerHelper.uploadImageToFirebaseStorage(
-//                    selectedImageUri,
-//                    fileName,
-//                    context
-//                )
+                val downloadUri: Uri? = ImagePickerHelper.uploadImageToFirebaseStorage(
+                    selectedImageUri,
+                    fileName,
+                    context
+                )
+
+                // TODO - gal add here location:
+                val lat = 37.4220;
+                val lng = 31.0841;
+
 
                 repostRepository.insertReport(
                     Report(
-                        userId = "1234L",
-                        data = "This is a sample report",
-                        lat = 37.4220,
-                        lng = 31.0841,
-                        image = "google.com/harelush",
+                        userId = user.uid,
+                        data = binding.addReportContent.text.toString(),
+                        lat = lat,
+                        lng = lng,
+                        image = downloadUri.toString(),
                     )
                 )
+//
+//                withContext(Dispatchers.Main) {
+//                    dismiss() // Close the dialog
+//                }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     println("Upload failed: ${e.message}")
                 }
             }
-
         }
 
-    }
-
-    fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
-
-        // Set up map interactions
-        mMap.setOnMapClickListener { latLng ->
-            // Clear existing markers
-            mMap.clear()
-            // Add a marker at the clicked location
-            mMap.addMarker(MarkerOptions().position(latLng))
-            // Save the selected location
-            selectedLocation = latLng
-        }
-
-        // If a location is selected, display the marker
-        selectedLocation?.let {
-            mMap.addMarker(MarkerOptions().position(it))
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(it, 15f))
-        }
     }
 }

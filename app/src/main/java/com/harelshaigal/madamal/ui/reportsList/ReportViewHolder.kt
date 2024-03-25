@@ -18,8 +18,8 @@ class ReportViewHolder(
     fragmentManager: FragmentManager
 ) :
     RecyclerView.ViewHolder(binding.root) {
-    private val ownerIdView: TextView = binding.reportOwnerId
-//    private val creationDateView: TextView = binding.reportCreationDate
+    private val userIdView: TextView = binding.reportOwnerId
+    private val creationDateView: TextView = binding.reportCreationDate
     private val dataView: TextView = binding.reportData
     private val imgView: ImageView = binding.reportImage
     private var currentReport: Report? = null
@@ -38,7 +38,7 @@ class ReportViewHolder(
 
     fun bind(report: Report) {
         currentReport = report
-        ownerIdView.text = report.userId
+        userIdView.text = report.userId
         dataView.text = report.data
         if (report.image != null) {
             Picasso.get().load(Uri.parse(report.image)).into(imgView)

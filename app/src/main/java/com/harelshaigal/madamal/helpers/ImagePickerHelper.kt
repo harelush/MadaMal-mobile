@@ -8,11 +8,8 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.storage.storage
-import com.harelshaigal.madamal.helpers.ToastHelper.showToast
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 
 class ImagePickerHelper(fragment: Fragment, private val callback: ImagePickerCallback) {
 
@@ -48,29 +45,17 @@ class ImagePickerHelper(fragment: Fragment, private val callback: ImagePickerCal
             context: Context?
         ): Uri? {
             val user = Firebase.auth.currentUser
-            return if (user != null && selectedImageUri != null) {
-                val ref = Firebase.storage.reference.child(fileName)
-                try {
-                    ref.putFile(selectedImageUri).await() // Upload the file
-                    val downloadUri = ref.downloadUrl.await()
-                    withContext(Dispatchers.Main) {
-                    }
-                    downloadUri
-                } catch (e: Exception) {
-                    withContext(Dispatchers.Main) {
-                        showToast(
-                            "Upload failed: ${e.message}",
-                            context
-                        ) // Handle failure, e.g., show a toast
-                    }
-                    null
-                }
-            } else {
-                withContext(Dispatchers.Main) {
-                    showToast("No user logged in or no image selected", context)
-                }
+            if (user == null || selectedImageUri == null) {
+                return null
+            }
+            val ref = Firebase.storage.reference.child(fileName)
+            return try {
+                ref.putFile(selectedImageUri).await() // Upload the file
+                ref.downloadUrl.await() // Get download URL
+            } catch (e: Exception) {
                 null
             }
         }
     }
+
 }
