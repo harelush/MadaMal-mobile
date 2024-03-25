@@ -11,10 +11,13 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
+import com.harelshaigal.madamal.data.reportsList
 import com.harelshaigal.madamal.databinding.FragmentReportsMapBinding
 import com.harelshaigal.madamal.ui.mapDisplay.reportMapDisplay.ReportMapDisplayFragment
 
-class ReportsMapFragment : Fragment(), OnMapReadyCallback {
+class ReportsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private lateinit var viewModel: ReportsMapViewModel
 
@@ -52,7 +55,6 @@ class ReportsMapFragment : Fragment(), OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState)
 
         binding.testBottomSheet.setOnClickListener {
-            ReportMapDisplayFragment.display(getParentFragmentManager())
         }
     }
 
@@ -70,6 +72,7 @@ class ReportsMapFragment : Fragment(), OnMapReadyCallback {
         super.onLowMemory()
         mapView.onLowMemory()
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         mapView.onDestroy()
@@ -79,8 +82,26 @@ class ReportsMapFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         googleMapRef = googleMap
 
+        for (report in reportsList()) {
+
+            if (report.lat != null && report.lng != null) {
+                val reportMarker = LatLng(report.lat, report.lng)
+                googleMap.addMarker(
+                    MarkerOptions().position(reportMarker).title(report.data)
+
+                )
+            }
+        }
+
         val location = LatLng(31.97007377827919, 34.772878313889215)
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(location))
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 12f))
+        googleMap.setOnMarkerClickListener(this)
+    }
+
+    override fun onMarkerClick(marker: Marker): Boolean {
+        marker.let {
+            ReportMapDisplayFragment.display(getParentFragmentManager())
+            return true
+        }
     }
 }
