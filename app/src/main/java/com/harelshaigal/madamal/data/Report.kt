@@ -27,4 +27,3 @@ fun Report.toMap(): Map<String, Any?> {
         "lastUpdated" to lastUpdated
     )
 }
-
