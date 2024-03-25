@@ -47,8 +47,6 @@ class UserProfileFragment : Fragment() {
                 .addOnSuccessListener { Log.d("harelush", "DocumentSnapshot successfully written!") }
                 .addOnFailureListener { e -> Log.w("harelush", "Error writing document", e) }
         }
-
-
         return root
     }
 
