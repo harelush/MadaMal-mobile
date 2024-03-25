@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.harelshaigal.madamal.data.Report
 import com.harelshaigal.madamal.databinding.FragmentReportMapDisplayBinding
+import com.harelshaigal.madamal.ui.reportDialogs.DeleteReportDialog
+import com.harelshaigal.madamal.ui.reportDialogs.reportDialogForm.ReportDialogFormFragment
 import com.squareup.picasso.Picasso
 
 class ReportMapDisplayFragment : BottomSheetDialogFragment() {
@@ -34,8 +36,23 @@ class ReportMapDisplayFragment : BottomSheetDialogFragment() {
         _binding = FragmentReportMapDisplayBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        setDisplayData()
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.deleteReport.setOnClickListener {
+            DeleteReportDialog.createDeleteDialog(view.context) {
+                // Perform delete operation here
+            }
+        }
+
+        binding.editReport.setOnClickListener {
+            ReportDialogFormFragment.display(parentFragmentManager)
+        }
+
+        setDisplayData()
     }
 
     override fun onDestroyView() {
