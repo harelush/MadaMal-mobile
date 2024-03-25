@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.harelshaigal.madamal.data.Report
 import com.harelshaigal.madamal.databinding.FragmentUserReportsListBinding
 
 class UserReportsListFragment : Fragment() {
@@ -27,9 +26,6 @@ class UserReportsListFragment : Fragment() {
         _binding = FragmentUserReportsListBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-//        viewModel..observe(viewLifecycleOwner) { reports ->
-//            updateUI(reports)
-//        }
         return root
     }
 
