@@ -13,6 +13,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.harelshaigal.madamal.data.Report
 import com.harelshaigal.madamal.data.reportsList
 import com.harelshaigal.madamal.databinding.FragmentReportsMapBinding
 import com.harelshaigal.madamal.ui.mapDisplay.reportMapDisplay.ReportMapDisplayFragment
@@ -26,7 +27,6 @@ class ReportsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerCli
     private lateinit var mapView: MapView
 
     private var googleMapRef: GoogleMap? = null
-
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -49,13 +49,6 @@ class ReportsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerCli
         mapView.getMapAsync(this)
 
         return root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.testBottomSheet.setOnClickListener {
-        }
     }
 
     override fun onResume() {
@@ -83,13 +76,14 @@ class ReportsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerCli
         googleMapRef = googleMap
 
         for (report in reportsList()) {
-
             if (report.lat != null && report.lng != null) {
                 val reportMarker = LatLng(report.lat, report.lng)
-                googleMap.addMarker(
+                val markerOptions: MarkerOptions =
                     MarkerOptions().position(reportMarker).title(report.data)
 
-                )
+                googleMap.addMarker(
+                    markerOptions
+                )?.tag = report
             }
         }
 
@@ -100,7 +94,7 @@ class ReportsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerCli
 
     override fun onMarkerClick(marker: Marker): Boolean {
         marker.let {
-            ReportMapDisplayFragment.display(getParentFragmentManager())
+            ReportMapDisplayFragment.display(getParentFragmentManager(), it.tag as Report)
             return true
         }
     }

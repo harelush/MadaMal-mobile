@@ -101,6 +101,7 @@
         android:layout_height="wrap_content"
         android:textDirection="rtl"
         android:textSize="24sp"
+        android:text="@string/palceholder_username"
         app:layout_constraintBottom_toTopOf="@id/reportImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

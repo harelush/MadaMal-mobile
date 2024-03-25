@@ -1,5 +1,6 @@
 package com.harelshaigal.madamal.ui.mapDisplay.reportMapDisplay
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.harelshaigal.madamal.data.Report
 import com.harelshaigal.madamal.databinding.FragmentReportMapDisplayBinding
+import com.squareup.picasso.Picasso
 
 class ReportMapDisplayFragment : BottomSheetDialogFragment() {
 
@@ -32,12 +34,27 @@ class ReportMapDisplayFragment : BottomSheetDialogFragment() {
         _binding = FragmentReportMapDisplayBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        setDisplayData()
         return root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun setDisplayData() {
+        val content = arguments?.getString("content")
+        val imageURL = arguments?.getString("imageURL")
+
+        if (content != null) {
+            binding.reportData.text = content
+        }
+
+        if (imageURL != null) {
+            Picasso.get().load(Uri.parse(imageURL)).into(binding.reportImage)
+        }
+
     }
 
     companion object {
