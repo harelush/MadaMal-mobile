@@ -11,10 +11,14 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
+import com.harelshaigal.madamal.data.Report
+import com.harelshaigal.madamal.data.reportsList
 import com.harelshaigal.madamal.databinding.FragmentReportsMapBinding
 import com.harelshaigal.madamal.ui.mapDisplay.reportMapDisplay.ReportMapDisplayFragment
 
-class ReportsMapFragment : Fragment(), OnMapReadyCallback {
+class ReportsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private lateinit var viewModel: ReportsMapViewModel
 
@@ -23,7 +27,6 @@ class ReportsMapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mapView: MapView
 
     private var googleMapRef: GoogleMap? = null
-
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -48,14 +51,6 @@ class ReportsMapFragment : Fragment(), OnMapReadyCallback {
         return root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.testBottomSheet.setOnClickListener {
-            ReportMapDisplayFragment.display(getParentFragmentManager())
-        }
-    }
-
     override fun onResume() {
         super.onResume()
         mapView.onResume()
@@ -70,6 +65,7 @@ class ReportsMapFragment : Fragment(), OnMapReadyCallback {
         super.onLowMemory()
         mapView.onLowMemory()
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         mapView.onDestroy()
@@ -79,8 +75,27 @@ class ReportsMapFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         googleMapRef = googleMap
 
+        for (report in reportsList()) {
+            if (report.lat != null && report.lng != null) {
+                val reportMarker = LatLng(report.lat, report.lng)
+                val markerOptions: MarkerOptions =
+                    MarkerOptions().position(reportMarker).title(report.data)
+
+                googleMap.addMarker(
+                    markerOptions
+                )?.tag = report
+            }
+        }
+
         val location = LatLng(31.97007377827919, 34.772878313889215)
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(location))
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 12f))
+        googleMap.setOnMarkerClickListener(this)
+    }
+
+    override fun onMarkerClick(marker: Marker): Boolean {
+        marker.let {
+            ReportMapDisplayFragment.display(getParentFragmentManager(), it.tag as Report)
+            return true
+        }
     }
 }
