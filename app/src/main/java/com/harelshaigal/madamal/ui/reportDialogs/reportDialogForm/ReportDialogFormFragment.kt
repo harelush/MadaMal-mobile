@@ -11,7 +11,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.harelshaigal.madamal.R
@@ -38,12 +37,9 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
     private val repostRepository: ReportRepository = ReportRepository()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        viewModel =
-            ViewModelProvider(this)[ReportDialogFormViewModel::class.java]
+        viewModel = ViewModelProvider(this)[ReportDialogFormViewModel::class.java]
 
         _binding = FragmentReportDialogFormBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -119,8 +115,7 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
                 }
 
                 reportDialogFormFragment.show(
-                    fragmentManager,
-                    reportDialogFormFragment.TAG
+                    fragmentManager, reportDialogFormFragment.TAG
                 )
             }
         }
@@ -142,14 +137,12 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
 
             try {
                 val downloadUri: Uri? = ImagePickerHelper.uploadImageToFirebaseStorage(
-                    selectedImageUri,
-                    fileName,
-                    context
+                    selectedImageUri, fileName, context
                 )
 
                 // TODO - gal add here location:
-                val lat = 37.4220;
-                val lng = 31.0841;
+                val lat = 37.4220
+                val lng = 31.0841
 
 
                 repostRepository.insertReport(
@@ -161,10 +154,10 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
                         image = downloadUri.toString(),
                     )
                 )
-//
-//                withContext(Dispatchers.Main) {
-//                    dismiss() // Close the dialog
-//                }
+
+                withContext(Dispatchers.Main) {
+                    dismiss() // Close the dialog
+                }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     println("Upload failed: ${e.message}")

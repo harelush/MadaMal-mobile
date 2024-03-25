@@ -5,15 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.harelshaigal.madamal.data.AppLocalDb
 import com.harelshaigal.madamal.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityMainBinding
-    private val reportDao by lazy { AppLocalDb.db.reportDao()!! } // Initialize ReportDao lazily
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -26,14 +22,5 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
         navView.setupWithNavController(navController)
-
-//        // Insert the report into the database using a coroutine
-//        GlobalScope.launch(Dispatchers.IO) {
-//            reportDao.insertReports(reportsList()) // Corrected to insertReports(vararg reports: Report)
-//            // Fetch all reports from the database
-////            val allReports = reportDao.getAllReports()
-//            println("All reports:")
-////            allReports.collect { Log.d("SHAY", it.toString()) }
-//        }
     }
 }
