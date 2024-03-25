@@ -38,7 +38,7 @@ class ReportViewHolder(
 
     fun bind(report: Report) {
         currentReport = report
-        ownerIdView.text = report.ownerId.toString()
+        ownerIdView.text = report.userId
         dataView.text = report.data
         if (report.image != null) {
             Picasso.get().load(Uri.parse(report.image)).into(imgView)

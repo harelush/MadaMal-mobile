@@ -13,11 +13,14 @@ interface ReportDao {
     fun getAllReports(): LiveData<List<Report>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertReport(vararg report: Report)
+    fun insertReport(report: Report): Long
 
     @Insert
-    fun insertReports(reports: List<Report>)
+    fun insertReports(reports: List<Report>): LongArray
 
     @Delete
     fun deleteReport(report: Report)
+
+    @Query("SELECT MAX(lastUpdated) FROM Report")
+    fun getLatestTimestamp(): Long?
 }

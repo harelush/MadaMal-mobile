@@ -19,6 +19,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.harelshaigal.madamal.R
 import com.harelshaigal.madamal.data.Report
+import com.harelshaigal.madamal.data.ReportRepository
 import com.harelshaigal.madamal.databinding.FragmentReportDialogFormBinding
 import com.harelshaigal.madamal.helpers.ImagePickerHelper
 import com.squareup.picasso.Picasso
@@ -30,22 +31,14 @@ import kotlinx.coroutines.withContext
 class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePickerCallback {
 
     private lateinit var imagePickerHelper: ImagePickerHelper
-
     val TAG = "add_or_edit_report_dialog"
-
     private lateinit var viewModel: ReportDialogFormViewModel
-
     private var _binding: FragmentReportDialogFormBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
-
     private var selectedImageUri: Uri? = null
-
     private lateinit var mMap: GoogleMap
     private var selectedLocation: LatLng? = null
-
+    private val repostRepository: ReportRepository = ReportRepository()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -151,37 +144,21 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
             val fileName = "reportsImages/${user.uid}/reportImage.jpg"
 
             try {
-                val downloadUri: Uri? = ImagePickerHelper.uploadImageToFirebaseStorage(
-                    selectedImageUri,
-                    fileName,
-                    context
-                )
+//                val downloadUri: Uri? = ImagePickerHelper.uploadImageToFirebaseStorage(
+//                    selectedImageUri,
+//                    fileName,
+//                    context
+//                )
 
-                println("SHAY: uploaded image")
-                val db = Firebase.firestore
-                val reportData = hashMapOf(
-                    "content" to binding.addReportContent.text.toString(),
-                    "userID" to user.uid,
-                    "latitude" to 1,
-                    "longitude" to 1,
-                    "imageURL" to downloadUri?.toString()
+                repostRepository.insertReport(
+                    Report(
+                        userId = "1234L",
+                        data = "This is a sample report",
+                        lat = 37.4220,
+                        lng = 31.0841,
+                        image = "google.com/harelush",
+                    )
                 )
-
-                db.collection("reports")
-                    .add(reportData)
-                    .addOnSuccessListener { documentReference ->
-                        Log.d("AddReportActivity", "Report saved with ID: ${documentReference.id}")
-                        println("SHAY: db sent")
-                        // Optionally, display a success message or navigate to another activity
-                    }
-                    .addOnFailureListener { e ->
-                        Log.w("AddReportActivity", "Error adding report", e)
-                        println("SHAY: db fail")
-                        // Optionally, display an error message
-                    }
-                withContext(Dispatchers.Main) {
-                    println("Upload Success")
-                }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     println("Upload failed: ${e.message}")
