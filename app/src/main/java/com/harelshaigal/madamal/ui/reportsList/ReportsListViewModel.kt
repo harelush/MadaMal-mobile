@@ -1,15 +1,12 @@
 package com.harelshaigal.madamal.ui.reportsList
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.harelshaigal.madamal.data.Report
-import com.harelshaigal.madamal.data.reportsList
+import com.harelshaigal.madamal.data.ReportRepository
 
 class ReportsListViewModel : ViewModel() {
-    private val _reportListData = MutableLiveData<List<Report>>().apply {
-        value = reportsList()
-    }
+    private val repository: ReportRepository = ReportRepository()
 
-    val reportListData: LiveData<List<Report>> = _reportListData
+    val reports: LiveData<List<Report>> = repository.getAllReports()
 }

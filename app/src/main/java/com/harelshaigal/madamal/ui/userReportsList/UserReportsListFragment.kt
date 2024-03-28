@@ -13,9 +13,6 @@ class UserReportsListFragment : Fragment() {
     private lateinit var viewModel: UserReportsListViewModel
 
     private var _binding: FragmentUserReportsListBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -23,16 +20,15 @@ class UserReportsListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         viewModel =
             ViewModelProvider(this)[UserReportsListViewModel::class.java]
 
         _binding = FragmentUserReportsListBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-
         return root
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

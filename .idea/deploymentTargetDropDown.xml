@@ -5,27 +5,11 @@
       <entry key="LoginActivity">
         <State />
       </entry>
-      <entry key="LoginActivity (1)">
-        <State />
-      </entry>
       <entry key="MainActivity">
         <State />
       </entry>
       <entry key="app">
-        <State>
-          <runningDeviceTargetSelectedWithDropDown>
-            <Target>
-              <type value="RUNNING_DEVICE_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\galro\.android\avd\Pixel_5_API_34.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </runningDeviceTargetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-03-02T14:51:53.077982400Z" />
-        </State>
+        <State />
       </entry>
     </value>
   </component>

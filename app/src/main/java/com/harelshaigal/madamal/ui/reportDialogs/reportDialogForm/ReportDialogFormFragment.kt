@@ -2,7 +2,6 @@ package com.harelshaigal.madamal.ui.reportDialogs.reportDialogForm
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,15 +9,13 @@ import android.widget.ImageView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.harelshaigal.madamal.R
 import com.harelshaigal.madamal.data.Report
+import com.harelshaigal.madamal.data.ReportRepository
 import com.harelshaigal.madamal.databinding.FragmentReportDialogFormBinding
 import com.harelshaigal.madamal.helpers.ImagePickerHelper
 import com.squareup.picasso.Picasso
@@ -30,30 +27,19 @@ import kotlinx.coroutines.withContext
 class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePickerCallback {
 
     private lateinit var imagePickerHelper: ImagePickerHelper
-
     val TAG = "add_or_edit_report_dialog"
-
     private lateinit var viewModel: ReportDialogFormViewModel
-
     private var _binding: FragmentReportDialogFormBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
-
     private var selectedImageUri: Uri? = null
-
     private lateinit var mMap: GoogleMap
     private var selectedLocation: LatLng? = null
-
+    private val repostRepository: ReportRepository = ReportRepository()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        viewModel =
-            ViewModelProvider(this)[ReportDialogFormViewModel::class.java]
+        viewModel = ViewModelProvider(this)[ReportDialogFormViewModel::class.java]
 
         _binding = FragmentReportDialogFormBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -129,8 +115,7 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
                 }
 
                 reportDialogFormFragment.show(
-                    fragmentManager,
-                    reportDialogFormFragment.TAG
+                    fragmentManager, reportDialogFormFragment.TAG
                 )
             }
         }
@@ -152,63 +137,29 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
 
             try {
                 val downloadUri: Uri? = ImagePickerHelper.uploadImageToFirebaseStorage(
-                    selectedImageUri,
-                    fileName,
-                    context
+                    selectedImageUri, fileName, context
                 )
 
-                println("SHAY: uploaded image")
-                val db = Firebase.firestore
-                val reportData = hashMapOf(
-                    "content" to binding.addReportContent.text.toString(),
-                    "userID" to user.uid,
-                    "latitude" to 1,
-                    "longitude" to 1,
-                    "imageURL" to downloadUri?.toString()
-                )
+                // TODO - gal add here location:
+                val lat = 37.4220
+                val lng = 31.0841
 
-                db.collection("reports")
-                    .add(reportData)
-                    .addOnSuccessListener { documentReference ->
-                        Log.d("AddReportActivity", "Report saved with ID: ${documentReference.id}")
-                        println("SHAY: db sent")
-                        // Optionally, display a success message or navigate to another activity
-                    }
-                    .addOnFailureListener { e ->
-                        Log.w("AddReportActivity", "Error adding report", e)
-                        println("SHAY: db fail")
-                        // Optionally, display an error message
-                    }
-                withContext(Dispatchers.Main) {
-                    println("Upload Success")
-                }
+
+                repostRepository.insertReport(
+                    Report(
+                        userId = user.uid,
+                        data = binding.addReportContent.text.toString(),
+                        lat = lat,
+                        lng = lng,
+                        image = downloadUri.toString(),
+                    )
+                )
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     println("Upload failed: ${e.message}")
                 }
             }
-
         }
 
-    }
-
-    fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
-
-        // Set up map interactions
-        mMap.setOnMapClickListener { latLng ->
-            // Clear existing markers
-            mMap.clear()
-            // Add a marker at the clicked location
-            mMap.addMarker(MarkerOptions().position(latLng))
-            // Save the selected location
-            selectedLocation = latLng
-        }
-
-        // If a location is selected, display the marker
-        selectedLocation?.let {
-            mMap.addMarker(MarkerOptions().position(it))
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(it, 15f))
-        }
     }
 }

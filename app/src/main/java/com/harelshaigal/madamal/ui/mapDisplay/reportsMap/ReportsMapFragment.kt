@@ -14,9 +14,9 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.harelshaigal.madamal.data.Report
-import com.harelshaigal.madamal.data.reportsList
 import com.harelshaigal.madamal.databinding.FragmentReportsMapBinding
 import com.harelshaigal.madamal.ui.mapDisplay.reportMapDisplay.ReportMapDisplayFragment
+import reportsList
 
 class ReportsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
