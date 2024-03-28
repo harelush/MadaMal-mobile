@@ -154,10 +154,6 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
                         image = downloadUri.toString(),
                     )
                 )
-
-                withContext(Dispatchers.Main) {
-                    dismiss() // Close the dialog
-                }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     println("Upload failed: ${e.message}")
