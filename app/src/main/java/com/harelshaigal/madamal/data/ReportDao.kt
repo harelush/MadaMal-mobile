@@ -10,7 +10,7 @@ import androidx.room.Update
 
 @Dao
 interface ReportDao {
-    @Query("SELECT * FROM Report")
+    @Query("SELECT * FROM Report ORDER BY lastUpdated DESC")
     fun getAllReports(): LiveData<List<Report>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -28,7 +28,7 @@ interface ReportDao {
     @Query("SELECT * FROM Report WHERE id = :id")
     fun getReportById(id: Long): LiveData<Report>
 
-    @Query("SELECT * FROM Report WHERE userId = :userId")
+    @Query("SELECT * FROM Report WHERE userId = :userId ORDER BY lastUpdated DESC")
     fun getReportsByUserId(userId: String): LiveData<List<Report>>
 
     @Query("DELETE FROM Report WHERE id = :id")
