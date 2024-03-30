@@ -108,7 +108,7 @@ class ReportRepository() {
         }
     }
 
-    suspend fun editReport(report: Report) {
+    suspend fun updateReport(report: Report) {
         withContext(Dispatchers.IO) {
             reportDao.updateReport(report)
             saveReportToFirebase(report) // Assuming you want to update the report in Firebase as well

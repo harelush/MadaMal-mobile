@@ -110,6 +110,7 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
                     val args = Bundle()
                     args.putString("content", reportToEdit.data)
                     args.putString("imageURL", reportToEdit.image)
+                    args.putLong("reportId", reportToEdit.id)
 
                     reportDialogFormFragment.arguments = args
                 }
@@ -132,28 +133,49 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
     private suspend fun saveReport() {
         val user = Firebase.auth.currentUser
 
+        val reportId = arguments?.getLong("reportId");
+        val editedReportImageUrl = arguments?.getString("imageURL")
+
         if (user != null) {
             val fileName = "reportsImages/${user.uid}/reportImage.jpg"
 
             try {
-                val downloadUri: Uri? = ImagePickerHelper.uploadImageToFirebaseStorage(
+                var downloadUri: Uri? = null
+                if(selectedImageUri === null && editedReportImageUrl != null) {
+                    downloadUri = Uri.parse(editedReportImageUrl)
+                } else if (selectedImageUri != null){
+                    downloadUri = ImagePickerHelper.uploadImageToFirebaseStorage(
                     selectedImageUri, fileName, context
                 )
+                }
 
                 // TODO - gal add here location:
                 val lat = 37.4220
                 val lng = 31.0841
 
 
-                repostRepository.insertReport(
-                    Report(
-                        userId = user.uid,
-                        data = binding.addReportContent.text.toString(),
-                        lat = lat,
-                        lng = lng,
-                        image = downloadUri.toString(),
+                if(reportId != null){
+                    repostRepository.updateReport(
+                        Report(
+                            id = reportId,
+                            userId = user.uid,
+                            data = binding.addReportContent.text.toString(),
+                            lat = lat,
+                            lng = lng,
+                            image = downloadUri.toString(),
+                        )
                     )
-                )
+                } else {
+                    repostRepository.insertReport(
+                        Report(
+                            userId = user.uid,
+                            data = binding.addReportContent.text.toString(),
+                            lat = lat,
+                            lng = lng,
+                            image = downloadUri.toString(),
+                        )
+                    )
+                }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     println("Upload failed: ${e.message}")
