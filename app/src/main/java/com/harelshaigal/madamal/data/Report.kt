@@ -8,6 +8,7 @@ data class Report (
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
     val userId: String,
+    val title: String,
     val data: String,
     val lat: Double?,
     val lng: Double?,

@@ -38,6 +38,7 @@ class ReportRepository() {
         return this.map { dto ->
             Report(
                 userId = dto.userId,
+                title = dto.title,
                 data = dto.data,
                 lat = dto.lat,
                 lng = dto.lng,

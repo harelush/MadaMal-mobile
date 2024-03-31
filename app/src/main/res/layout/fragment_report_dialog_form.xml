@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -55,6 +54,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogAppBar">
 
+        <!-- TextInputLayout for Title -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/addReport_title_layout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/report_title_input"
+            app:boxStrokeWidth="2dp"
+            app:boxStrokeWidthFocused="2dp"
+            app:endIconMode="none"
+            app:hintEnabled="true"
+            app:layout_constraintBottom_toTopOf="@id/addReport_content_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:singleLine="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/addReport_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:textColor="@color/black" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- TextInputLayout for Content -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/addReport_content_layout"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -68,7 +93,7 @@
             app:layout_constraintBottom_toTopOf="@id/addReport_imageView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/addReport_title_layout"
             app:singleLine="false">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -78,9 +103,7 @@
                 android:inputType="textMultiLine"
                 android:maxLines="5"
                 android:textColor="@color/black" />
-
         </com.google.android.material.textfield.TextInputLayout>
-
 
         <ImageView
             android:id="@+id/addReport_imageView"
@@ -93,9 +116,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/addReport_content_layout" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/saveButton"

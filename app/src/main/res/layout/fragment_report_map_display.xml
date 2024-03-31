@@ -76,10 +76,10 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/report_owner_id"
+                android:id="@+id/report_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/palceholder_username"
+                android:text="@string/palceholder_title"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -101,7 +101,7 @@
         android:layout_height="wrap_content"
         android:textDirection="rtl"
         android:textSize="24sp"
-        android:text="@string/palceholder_username"
+        android:text="@string/palceholder_title"
         app:layout_constraintBottom_toTopOf="@id/reportImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
