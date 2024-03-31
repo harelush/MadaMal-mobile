@@ -35,7 +35,7 @@ class ReportListFragment : Fragment() {
         recyclerView.adapter = reportAdapter
 
         viewModel.reports.observe(viewLifecycleOwner) {
-            reportAdapter.submitList(it as MutableList<Report>)
+            reportAdapter.submitList(it.toMutableList())
         }
 
         return root

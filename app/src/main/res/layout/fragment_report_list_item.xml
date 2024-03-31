@@ -71,15 +71,15 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/report_owner_id"
+                    android:id="@+id/report_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/palceholder_username"
+                    android:text="@string/palceholder_title"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/report_creation_date"
+                    android:id="@+id/report_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/palceholder_date"

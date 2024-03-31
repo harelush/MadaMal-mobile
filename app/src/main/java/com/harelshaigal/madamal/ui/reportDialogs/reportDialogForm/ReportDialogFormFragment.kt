@@ -87,12 +87,17 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
 
     private fun setEditData() {
         val content = arguments?.getString("content")
+        val title = arguments?.getString("title")
         val imageURL = arguments?.getString("imageURL")
 
-        if (content != null || imageURL != null) {
+        if (content != null || imageURL != null || title != null) {
             binding.reportDialogTitle.text = getString(R.string.title_edit_report_dialog)
             if (content != null) {
                 binding.addReportContent.setText(content)
+            }
+
+            if(title != null) {
+                binding.addReportTitle.setText(title)
             }
 
             if (imageURL != null) {
@@ -110,7 +115,7 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
                     val args = Bundle()
                     args.putString("content", reportToEdit.data)
                     args.putString("imageURL", reportToEdit.image)
-                    args.putLong("reportId", reportToEdit.id)
+                    args.putString("title", reportToEdit.title)
 
                     reportDialogFormFragment.arguments = args
                 }
@@ -141,12 +146,12 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
 
             try {
                 var downloadUri: Uri? = null
-                if(selectedImageUri === null && editedReportImageUrl != null) {
+                if (selectedImageUri === null && editedReportImageUrl != null) {
                     downloadUri = Uri.parse(editedReportImageUrl)
-                } else if (selectedImageUri != null){
+                } else if (selectedImageUri != null) {
                     downloadUri = ImagePickerHelper.uploadImageToFirebaseStorage(
-                    selectedImageUri, fileName, context
-                )
+                        selectedImageUri, fileName, context
+                    )
                 }
 
                 // TODO - gal add here location:
@@ -154,11 +159,12 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
                 val lng = 31.0841
 
 
-                if(reportId != null){
+                if (reportId != null) {
                     repostRepository.updateReport(
                         Report(
                             id = reportId,
                             userId = user.uid,
+                            title = binding.addReportTitle.text.toString(),
                             data = binding.addReportContent.text.toString(),
                             lat = lat,
                             lng = lng,
@@ -169,6 +175,7 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
                     repostRepository.insertReport(
                         Report(
                             userId = user.uid,
+                            title = binding.addReportTitle.text.toString(),
                             data = binding.addReportContent.text.toString(),
                             lat = lat,
                             lng = lng,
@@ -176,6 +183,7 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
                         )
                     )
                 }
+                dismiss()
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     println("Upload failed: ${e.message}")

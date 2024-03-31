@@ -8,8 +8,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.harelshaigal.madamal.data.Report
 import com.harelshaigal.madamal.databinding.FragmentReportListItemBinding
-import com.harelshaigal.madamal.ui.reportDialogs.reportDialogForm.ReportDialogFormFragment
+import com.harelshaigal.madamal.helpers.Utils
 import com.harelshaigal.madamal.ui.reportDialogs.DeleteReportDialog
+import com.harelshaigal.madamal.ui.reportDialogs.reportDialogForm.ReportDialogFormFragment
 import com.squareup.picasso.Picasso
 
 class UserReportViewHolder(
@@ -18,8 +19,8 @@ class UserReportViewHolder(
     fragmentManager: FragmentManager
 ) :
     RecyclerView.ViewHolder(binding.root) {
-    private val userIdView: TextView = binding.reportOwnerId
-    private val creationDateView: TextView = binding.reportCreationDate
+    private val titleView: TextView = binding.reportTitle
+    private val creationDateView: TextView = binding.reportDate
     private val dataView: TextView = binding.reportData
     private val imgView: ImageView = binding.reportImage
     private var currentReport: Report? = null
@@ -38,8 +39,9 @@ class UserReportViewHolder(
 
     fun bind(report: Report) {
         currentReport = report
-        userIdView.text = report.userId
+        titleView.text = report.title
         dataView.text = report.data
+        creationDateView.text = report.lastUpdated?.let { Utils.formatTimestampToString(it) }
         if (report.image != null) {
             Picasso.get().load(Uri.parse(report.image)).into(imgView)
         }

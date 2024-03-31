@@ -6,7 +6,7 @@ import androidx.room.RoomDatabase
 import com.harelshaigal.madamal.application.MadamalApplication
 
 
-@Database(entities = [Report::class], version = 3)
+@Database(entities = [Report::class], version = 4)
 abstract class AppLocalDbRepository : RoomDatabase() {
     abstract fun reportDao(): ReportDao?
 }
