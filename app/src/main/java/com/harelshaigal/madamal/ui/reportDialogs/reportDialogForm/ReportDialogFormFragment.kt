@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.ktx.auth
@@ -21,7 +23,6 @@ import com.harelshaigal.madamal.helpers.ImagePickerHelper
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePickerCallback {
@@ -35,6 +36,7 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
     private lateinit var mMap: GoogleMap
     private var selectedLocation: LatLng? = null
     private val repostRepository: ReportRepository = ReportRepository()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -61,10 +63,8 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
         }
 
         binding.saveButton.setOnClickListener {
-            runBlocking {
-                launch {
-                    saveReport()
-                }
+            lifecycleScope.launch {
+                saveReport()
             }
         }
     }
@@ -96,7 +96,7 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
                 binding.addReportContent.setText(content)
             }
 
-            if(title != null) {
+            if (title != null) {
                 binding.addReportTitle.setText(title)
             }
 
@@ -136,9 +136,13 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
     }
 
     private suspend fun saveReport() {
+        withContext(Dispatchers.Main) {
+            binding.addReportProgressBar.visibility = View.VISIBLE
+        }
+
         val user = Firebase.auth.currentUser
 
-        val reportId = arguments?.getLong("reportId");
+        val reportId = arguments?.getLong("reportId")
         val editedReportImageUrl = arguments?.getString("imageURL")
 
         if (user != null) {
@@ -183,10 +187,21 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
                         )
                     )
                 }
+
+                withContext(Dispatchers.Main) {
+                    binding.addReportProgressBar.visibility = View.GONE
+                    Toast.makeText(context, "הדיווח נשמר בהצלחה", Toast.LENGTH_SHORT).show()
+                    dismiss()
+                }
                 dismiss()
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    println("Upload failed: ${e.message}")
+                    binding.addReportProgressBar.visibility = View.GONE
+                    Toast.makeText(
+                        context,
+                        "שגיאה בשמירת הדיווח : ${e.localizedMessage}",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }

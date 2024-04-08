@@ -10,8 +10,8 @@ import com.harelshaigal.madamal.data.ReportRepository
 
 class UserReportsListViewModel : ViewModel() {
     private val repository: ReportRepository = ReportRepository()
-    val user = Firebase.auth.currentUser
-    val reports: LiveData<List<Report>> = repository.getReportsByUserId(user?.uid!!).map { reports ->
+
+    val reports: LiveData<List<Report>> = repository.getAllReports(Firebase.auth.currentUser?.uid).map { reports ->
         reports.sortedByDescending { report -> report.lastUpdated }
     }
 }

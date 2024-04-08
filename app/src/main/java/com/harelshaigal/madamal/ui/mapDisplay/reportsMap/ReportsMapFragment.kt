@@ -16,11 +16,11 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.harelshaigal.madamal.data.Report
 import com.harelshaigal.madamal.databinding.FragmentReportsMapBinding
 import com.harelshaigal.madamal.ui.mapDisplay.reportMapDisplay.ReportMapDisplayFragment
-import reportsList
+import com.harelshaigal.madamal.ui.reportsList.ReportsListViewModel
 
 class ReportsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
-    private lateinit var viewModel: ReportsMapViewModel
+    private lateinit var viewModel: ReportsListViewModel
 
     private var _binding: FragmentReportsMapBinding? = null
 
@@ -39,7 +39,7 @@ class ReportsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerCli
     ): View {
 
         viewModel =
-            ViewModelProvider(this)[ReportsMapViewModel::class.java]
+            ViewModelProvider(this)[ReportsListViewModel::class.java]
 
         _binding = FragmentReportsMapBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -75,21 +75,29 @@ class ReportsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerCli
     override fun onMapReady(googleMap: GoogleMap) {
         googleMapRef = googleMap
 
-        for (report in reportsList()) {
+        observeReports()
+
+        val location = LatLng(31.97007377827919, 34.772878313889215)
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 12f))
+        googleMap.setOnMarkerClickListener(this)
+    }
+
+    private fun observeReports() {
+        viewModel.reports.observe(viewLifecycleOwner) { reports ->
+            updateMapMarkers(reports)
+        }
+    }
+
+    private fun updateMapMarkers(reports: List<Report>) {
+        for (report in reports) {
             if (report.lat != null && report.lng != null) {
                 val reportMarker = LatLng(report.lat, report.lng)
                 val markerOptions: MarkerOptions =
                     MarkerOptions().position(reportMarker).title(report.data)
 
-                googleMap.addMarker(
-                    markerOptions
-                )?.tag = report
+                googleMapRef?.addMarker(markerOptions)?.tag = report
             }
         }
-
-        val location = LatLng(31.97007377827919, 34.772878313889215)
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 12f))
-        googleMap.setOnMarkerClickListener(this)
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
