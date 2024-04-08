@@ -14,17 +14,30 @@ class ReportRepository() {
     private val reportDao by lazy { AppLocalDb.db.reportDao()!! }
     private val repositoryScope = CoroutineScope(Dispatchers.IO)
 
-    fun getAllReports(): LiveData<List<Report>> {
-        fetchLatestReportsFromFirebase()
-        return reportDao.getAllReports()
+    fun getAllReports(userId: String? = null): LiveData<List<Report>> {
+        fetchLatestReportsFromFirebase(userId)
+        return if (userId == null) {
+            // No userId specified, return all reports
+            reportDao.getAllReports()
+        } else {
+            // userId specified, return reports for the user
+            reportDao.getReportsByUserId(userId)
+        }
     }
 
-    private fun fetchLatestReportsFromFirebase() {
+
+    private fun fetchLatestReportsFromFirebase(userId: String? = null) {
         repositoryScope.launch {
             val latestTimestamp = reportDao.getLatestTimestamp() ?: 0
-            db.collection("reports")
+            var query = db.collection("reports")
                 .whereGreaterThan("lastUpdated", latestTimestamp)
-                .get()
+
+            // If a userId is provided, further restrict the query to fetch only the user's reports
+            userId?.let {
+                query = query.whereEqualTo("userId", it)
+            }
+
+            query.get()
                 .addOnSuccessListener { documents ->
                     handleFirebaseSuccess(documents)
                 }
@@ -33,6 +46,7 @@ class ReportRepository() {
                 }
         }
     }
+
 
     private fun List<ReportDto>.toReportEntities(): List<Report> {
         return this.map { dto ->
