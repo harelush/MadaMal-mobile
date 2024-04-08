@@ -50,6 +50,7 @@ class ImagePickerHelper(fragment: Fragment, private val callback: ImagePickerCal
             }
             val ref = Firebase.storage.reference.child(fileName)
             return try {
+//                ref.child(selectedImageUri.toString()).delete().await()
                 ref.putFile(selectedImageUri).await() // Upload the file
                 ref.downloadUrl.await() // Get download URL
             } catch (e: Exception) {
