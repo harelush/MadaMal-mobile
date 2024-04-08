@@ -1,20 +1,21 @@
 package com.harelshaigal.madamal.ui.userDispaly.userProfile
 
+import OperationStatus
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
 import com.harelshaigal.madamal.databinding.FragmentUserProfileBinding
 import com.harelshaigal.madamal.helpers.ImagePickerHelper
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.tasks.await
+import com.wajahatkarim3.easyvalidation.core.view_ktx.nonEmpty
 
 class UserProfileFragment : Fragment(), ImagePickerHelper.ImagePickerCallback {
     private lateinit var viewModel: UserProfileViewModel
@@ -65,8 +66,38 @@ class UserProfileFragment : Fragment(), ImagePickerHelper.ImagePickerCallback {
         viewModel.fetchUserImageUrl(userUID.toString())
 
         binding.editUserButton.setOnClickListener {
+            binding.registerProgressBar.visibility = View.VISIBLE
+
             selectedImageUri?.let { uri ->
                 viewModel.uploadUserImage(uri)
+            }
+
+            val newName = binding.userProfileFullNameText.text.toString()
+            if (newName.nonEmpty()) {
+                viewModel.updateUserDetails(userUID.toString(), newName)
+            }
+
+            viewModel.updateStatus.observe(viewLifecycleOwner) { status ->
+                when (status) {
+                    OperationStatus.LOADING -> {
+                        binding.registerProgressBar.visibility = View.VISIBLE
+                    }
+                    OperationStatus.SUCCESS -> {
+                        binding.registerProgressBar.visibility = View.GONE
+                        Toast.makeText(context, "שינוי הנתונים נשמר בהצלחה", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+
+                    OperationStatus.FAILURE -> {
+                        binding.registerProgressBar.visibility =
+                            View.GONE
+                        Toast.makeText(
+                            context,
+                            "שגיאה בשמירת הנתונים, נא לנסות שוב",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
             }
         }
 
@@ -79,4 +110,8 @@ class UserProfileFragment : Fragment(), ImagePickerHelper.ImagePickerCallback {
     }
 
     override fun getImageViewForLoad(): ImageView = binding.userProfileProfileImageView
+
+    override fun selectedImageExtraLogic(uri: Uri?) {
+        uri.also { selectedImageUri = it }
+    }
 }

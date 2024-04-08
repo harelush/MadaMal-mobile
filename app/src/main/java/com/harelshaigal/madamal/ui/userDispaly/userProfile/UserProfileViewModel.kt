@@ -1,5 +1,6 @@
 package com.harelshaigal.madamal.ui.userDispaly.userProfile
 
+import OperationStatus
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,8 +8,8 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.harelshaigal.madamal.data.User
 import com.google.firebase.storage.FirebaseStorage
+import com.harelshaigal.madamal.data.User
 import com.harelshaigal.madamal.helpers.ImagePickerHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +23,9 @@ class UserProfileViewModel : ViewModel() {
 
     private val _imageUrl = MutableLiveData<String>()
     val imageUrl: LiveData<String> = _imageUrl
+
+    private val _updateStatus = MutableLiveData<OperationStatus>()
+    val updateStatus: LiveData<OperationStatus> = _updateStatus
 
     fun fetchUserData(uid: String) {
         db.collection("users").document(uid).get().addOnSuccessListener { document ->
@@ -51,7 +55,7 @@ class UserProfileViewModel : ViewModel() {
                 val userUid = Firebase.auth.currentUser?.uid
                 if (userUid != null) {
                     val fileName = "images/$userUid/profile.jpg"
-                    val downloadUrl = ImagePickerHelper.uploadImageToFirebaseStorage(
+                    ImagePickerHelper.uploadImageToFirebaseStorage(
                         imageUri,
                         fileName,
                         null // Context is not used in this example, pass null or adjust accordingly.
@@ -61,6 +65,17 @@ class UserProfileViewModel : ViewModel() {
                 // Handle error
             }
         }
+    }
+
+    fun updateUserDetails(uid: String, fullName: String) {
+        _updateStatus.value = OperationStatus.LOADING
+        db.collection("users").document(uid).update("fullName", fullName)
+            .addOnSuccessListener {
+                _updateStatus.postValue(OperationStatus.SUCCESS)
+            }
+            .addOnFailureListener { e ->
+                _updateStatus.postValue(OperationStatus.FAILURE)
+            }
     }
 
 }

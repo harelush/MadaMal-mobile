@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.harelshaigal.madamal.data.Report
 import com.harelshaigal.madamal.databinding.FragmentReportsListBinding
 import com.harelshaigal.madamal.ui.reportDialogs.reportDialogForm.ReportDialogFormFragment
 
@@ -34,8 +33,8 @@ class UserReportListFragment : Fragment() {
         val recyclerView: RecyclerView = binding.reportList
         recyclerView.adapter = reportAdapter
 
-        viewModel.reports.observe(viewLifecycleOwner) {
-            reportAdapter.submitList(it as MutableList<Report>)
+        viewModel.reports.observe(viewLifecycleOwner) { reports ->
+            reportAdapter.submitList(reports ?: emptyList())
         }
 
         return root
@@ -45,6 +44,7 @@ class UserReportListFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
