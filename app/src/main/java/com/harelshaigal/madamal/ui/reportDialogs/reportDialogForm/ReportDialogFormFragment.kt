@@ -16,6 +16,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.harelshaigal.madamal.R
+import com.harelshaigal.madamal.data.LocationDataViewModel
 import com.harelshaigal.madamal.data.Report
 import com.harelshaigal.madamal.data.ReportRepository
 import com.harelshaigal.madamal.databinding.FragmentReportDialogFormBinding
@@ -36,7 +37,7 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
     private lateinit var mMap: GoogleMap
     private var selectedLocation: LatLng? = null
     private val repostRepository: ReportRepository = ReportRepository()
-
+    private lateinit var locationViewModel: LocationDataViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -47,6 +48,7 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
         val root: View = binding.root
 
         imagePickerHelper = ImagePickerHelper(this, this)
+        locationViewModel = ViewModelProvider(requireActivity()).get(LocationDataViewModel::class.java)
 
         return root
     }
@@ -158,10 +160,8 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
                     )
                 }
 
-                // TODO - gal add here location:
-                val lat = 37.4220
-                val lng = 31.0841
-
+                val lat = locationViewModel.latitude
+                val lng = locationViewModel.longtitude
 
                 if (reportId != null) {
                     repostRepository.updateReport(
