@@ -61,6 +61,7 @@ android {
 
 dependencies {
 
+    implementation("com.google.android.gms:play-services-location:21.2.0")
     val roomVersion = "2.4.3"
     implementation("androidx.room:room-runtime:$roomVersion")
     kapt("androidx.room:room-compiler:$roomVersion")
