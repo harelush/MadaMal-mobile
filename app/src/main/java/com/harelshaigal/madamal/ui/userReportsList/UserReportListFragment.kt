@@ -6,15 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
-import com.harelshaigal.madamal.databinding.FragmentReportsListBinding
-import com.harelshaigal.madamal.ui.reportDialogs.reportDialogForm.ReportDialogFormFragment
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import com.harelshaigal.madamal.databinding.FragmentUserReportsListBinding
+import com.harelshaigal.madamal.ui.reportsList.ReportListFragment
 
 class UserReportListFragment : Fragment() {
 
     private lateinit var viewModel: UserReportsListViewModel
 
-    private var _binding: FragmentReportsListBinding? = null
+    private var _binding: FragmentUserReportsListBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -26,18 +27,19 @@ class UserReportListFragment : Fragment() {
         viewModel =
             ViewModelProvider(this)[UserReportsListViewModel::class.java]
 
-        _binding = FragmentReportsListBinding.inflate(inflater, container, false)
+        _binding = FragmentUserReportsListBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        val reportAdapter = UserReportListIAdapter(getParentFragmentManager())
-
-        val recyclerView: RecyclerView = binding.reportList
-        recyclerView.adapter = reportAdapter
-
-        viewModel.reports.observe(viewLifecycleOwner) { reports ->
-            reportAdapter.submitList(reports ?: emptyList())
-        }
 
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val reportsListFragment = ReportListFragment.newInstance(Firebase.auth.currentUser?.uid)
+        childFragmentManager.beginTransaction()
+            .replace(binding.reportsListFragmentContainer.id, reportsListFragment)
+            .commit()
     }
 
     override fun onDestroyView() {
@@ -45,11 +47,4 @@ class UserReportListFragment : Fragment() {
         _binding = null
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.addReportButton.setOnClickListener {
-            ReportDialogFormFragment.display(getParentFragmentManager())
-        }
-    }
 }

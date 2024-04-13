@@ -7,9 +7,11 @@ import com.harelshaigal.madamal.data.Report
 import com.harelshaigal.madamal.data.ReportRepository
 
 class ReportsListViewModel : ViewModel() {
+
     private val repository: ReportRepository = ReportRepository()
 
-    val reports: LiveData<List<Report>> = repository.getAllReports().map { reports ->
-        reports.sortedByDescending { report -> report.lastUpdated }
-    }
+    fun getReportList(userId: String?): LiveData<List<Report>> =
+        repository.getAllReports(userId).map { reports ->
+            reports.sortedByDescending { report -> report.lastUpdated }
+        }
 }

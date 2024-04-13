@@ -12,7 +12,19 @@ import com.harelshaigal.madamal.databinding.FragmentReportsListBinding
 import com.harelshaigal.madamal.ui.reportDialogs.reportDialogForm.ReportDialogFormFragment
 
 class ReportListFragment : Fragment() {
+    companion object {
+        private const val PARAM_KEY = "userId"
 
+        fun newInstance(userId: String?): ReportListFragment {
+            val fragment = ReportListFragment()
+            val args = Bundle()
+            args.putString(PARAM_KEY, userId)
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
+    private lateinit var reportAdapter: ReportListIAdapter
     private lateinit var viewModel: ReportsListViewModel
 
     private var _binding: FragmentReportsListBinding? = null
@@ -27,16 +39,11 @@ class ReportListFragment : Fragment() {
         viewModel =
             ViewModelProvider(this)[ReportsListViewModel::class.java]
 
+        reportAdapter = ReportListIAdapter(getParentFragmentManager())
         _binding = FragmentReportsListBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        val reportAdapter = ReportListIAdapter(getParentFragmentManager())
-
         val recyclerView: RecyclerView = binding.reportList
         recyclerView.adapter = reportAdapter
-
-        viewModel.reports.observe(viewLifecycleOwner) {
-            reportAdapter.submitList(it.toMutableList())
-        }
 
         return root
     }
@@ -45,8 +52,12 @@ class ReportListFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getReportList(arguments?.getString(PARAM_KEY)).observe(viewLifecycleOwner) {
+            reportAdapter.submitList(it.toMutableList())
+        }
 
         binding.addReportButton.setOnClickListener {
             ReportDialogFormFragment.display(getParentFragmentManager())
