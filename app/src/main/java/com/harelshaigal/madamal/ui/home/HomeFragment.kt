@@ -6,10 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
 import com.harelshaigal.madamal.databinding.FragmentHomeBinding
-import com.harelshaigal.madamal.ui.reportsList.ReportListFragment
 
 class HomeFragment : Fragment() {
 
