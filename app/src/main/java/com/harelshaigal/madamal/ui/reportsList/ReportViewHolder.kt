@@ -27,9 +27,7 @@ class ReportViewHolder(
 
     init {
         binding.deleteReport.setOnClickListener {
-            DeleteReportDialog.createDeleteDialog(context) {
-                // Perform delete operation here
-            }
+            currentReport?.let { it1 -> DeleteReportDialog.createDeleteDialog(context, it1.id) }
         }
 
         binding.editReport.setOnClickListener {

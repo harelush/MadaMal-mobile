@@ -2,9 +2,10 @@ package com.harelshaigal.madamal.ui.reportDialogs
 
 import android.content.Context
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.harelshaigal.madamal.data.ReportRepository
 
 object DeleteReportDialog {
-    fun createDeleteDialog(context: Context, onConfirm: () -> Unit) {
+    fun createDeleteDialog(context: Context, reportId: Long) {
         MaterialAlertDialogBuilder(context)
             .setTitle("מחיקת דיווח")
             .setMessage("האם אתה בטוח שברצונך למחוק דיווח זה?")
@@ -12,7 +13,7 @@ object DeleteReportDialog {
                 dialog.dismiss()
             }
             .setPositiveButton("מחק") { _, _ ->
-                onConfirm()
+                ReportRepository().deleteReportById(reportId)
             }
             .show()
     }

@@ -42,11 +42,11 @@ class ReportMapDisplayFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.deleteReport.setOnClickListener {
-            DeleteReportDialog.createDeleteDialog(view.context) {
-                // Perform delete operation here
-            }
-        }
+//        binding.deleteReport.setOnClickListener {
+//            DeleteReportDialog.createDeleteDialog(view.context) {
+//                // Perform delete operation here
+//            }
+//        }
 
         binding.editReport.setOnClickListener {
             ReportDialogFormFragment.display(parentFragmentManager)
