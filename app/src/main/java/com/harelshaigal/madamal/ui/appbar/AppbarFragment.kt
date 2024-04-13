@@ -13,7 +13,6 @@ import com.harelshaigal.madamal.ui.login.LoginActivity
 class AppbarFragment : Fragment() {
     private var _binding: FragmentAppbarBinding? = null
     private val binding get() = _binding!!
-    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -21,7 +20,6 @@ class AppbarFragment : Fragment() {
     ): View {
         _binding = FragmentAppbarBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        auth = FirebaseAuth.getInstance()
 
         return root
     }
@@ -31,7 +29,6 @@ class AppbarFragment : Fragment() {
 
         binding.logoutButton.setOnClickListener {
             LogoutDialog.createLogoutDialog(requireContext()) {
-                FirebaseAuth.getInstance().signOut()
                 navigateToLogin()
             }
         }
