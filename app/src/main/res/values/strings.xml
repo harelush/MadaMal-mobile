@@ -28,5 +28,8 @@
     <string name="google_map_api_key">AIzaSyB8PT0FJsLc4UmG7bD3BC0I3YUbgOwWr9I</string>
     <string name="report_data_input">פרטי הדיווח</string>
     <string name="report_title_input">כותרת הדיווח</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="logout">התנתק</string>
 
 </resources>

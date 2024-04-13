@@ -7,11 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.harelshaigal.madamal.databinding.ActivityMainBinding
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.harelshaigal.madamal.data.LocationDataViewModel
 
 

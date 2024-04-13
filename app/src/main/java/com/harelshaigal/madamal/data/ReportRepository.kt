@@ -15,7 +15,7 @@ class ReportRepository() {
     private val repositoryScope = CoroutineScope(Dispatchers.IO)
 
     fun getAllReports(userId: String? = null): LiveData<List<Report>> {
-        fetchLatestReportsFromFirebase(userId)
+//        fetchLatestReportsFromFirebase(userId)
         return if (userId == null) {
             // No userId specified, return all reports
             reportDao.getAllReports()
