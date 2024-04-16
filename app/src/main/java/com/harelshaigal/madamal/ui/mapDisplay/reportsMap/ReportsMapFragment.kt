@@ -16,11 +16,10 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.harelshaigal.madamal.data.Report
 import com.harelshaigal.madamal.databinding.FragmentReportsMapBinding
 import com.harelshaigal.madamal.ui.mapDisplay.reportMapDisplay.ReportMapDisplayFragment
-import com.harelshaigal.madamal.ui.reportsList.ReportsListViewModel
 
 class ReportsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
-    private lateinit var viewModel: ReportsListViewModel
+    private lateinit var viewModel: ReportsMapViewModel
 
     private var _binding: FragmentReportsMapBinding? = null
 
@@ -39,7 +38,7 @@ class ReportsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerCli
     ): View {
 
         viewModel =
-            ViewModelProvider(this)[ReportsListViewModel::class.java]
+            ViewModelProvider(this)[ReportsMapViewModel::class.java]
 
         _binding = FragmentReportsMapBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -83,7 +82,7 @@ class ReportsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerCli
     }
 
     private fun observeReports() {
-        viewModel.getReportList(null).observe(viewLifecycleOwner) { reports ->
+        viewModel.reportList.observe(viewLifecycleOwner) { reports ->
             updateMapMarkers(reports)
         }
     }
@@ -95,14 +94,14 @@ class ReportsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerCli
                 val markerOptions: MarkerOptions =
                     MarkerOptions().position(reportMarker).title(report.data)
 
-                googleMapRef?.addMarker(markerOptions)?.tag = report
+                googleMapRef?.addMarker(markerOptions)?.tag = report.id
             }
         }
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
         marker.let {
-            ReportMapDisplayFragment.display(getParentFragmentManager(), it.tag as Report)
+            ReportMapDisplayFragment.display(getParentFragmentManager(), it.tag as Long)
             return true
         }
     }
