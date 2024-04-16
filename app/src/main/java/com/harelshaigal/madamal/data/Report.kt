@@ -14,7 +14,7 @@ data class Report (
     val lng: Double?,
 //    @DrawableRes
     var image: String? = null,
-    val lastUpdated: Long? = null
+    val lastUpdated: Long? = System.currentTimeMillis()
 )
 
 fun Report.toMap(): Map<String, Any?> {
