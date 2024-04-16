@@ -140,13 +140,16 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
         val user = Firebase.auth.currentUser
 
         if (user != null) {
+            val lat = locationViewModel.latitude
+            val lng = locationViewModel.longtitude
+
             val reportToSave: Report = if (originReport === null)
                 Report(
                     userId = user.uid,
                     title = binding.addReportTitle.text.toString(),
                     data = binding.addReportContent.text.toString(),
-                    lat = locationViewModel.latitude,
-                    lng = locationViewModel.longtitude,
+                    lat = lat,
+                    lng = lng,
                 )
             else
                 originReport!!.copy(
