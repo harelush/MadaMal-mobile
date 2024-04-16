@@ -59,7 +59,7 @@ class ReportListFragment : Fragment() {
         }
 
         binding.addReportButton.setOnClickListener {
-            ReportDialogFormFragment.display(getParentFragmentManager())
+            ReportDialogFormFragment.display(getParentFragmentManager(), null)
         }
     }
 }

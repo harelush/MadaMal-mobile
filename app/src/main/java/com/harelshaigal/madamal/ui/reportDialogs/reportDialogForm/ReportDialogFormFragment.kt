@@ -11,8 +11,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.harelshaigal.madamal.R
@@ -34,10 +32,11 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
     private var _binding: FragmentReportDialogFormBinding? = null
     private val binding get() = _binding!!
     private var selectedImageUri: Uri? = null
-    private lateinit var mMap: GoogleMap
-    private var selectedLocation: LatLng? = null
+
     private val repostRepository: ReportRepository = ReportRepository()
     private lateinit var locationViewModel: LocationDataViewModel
+
+    private var originReport: Report? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -48,7 +47,8 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
         val root: View = binding.root
 
         imagePickerHelper = ImagePickerHelper(this, this)
-        locationViewModel = ViewModelProvider(requireActivity()).get(LocationDataViewModel::class.java)
+        locationViewModel =
+            ViewModelProvider(requireActivity()).get(LocationDataViewModel::class.java)
 
         return root
     }
@@ -75,7 +75,9 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
         super.onStart()
         val dialog = dialog
         if (dialog != null) {
-            setEditData()
+            if (arguments?.getString("reportId") != null)
+                setEditData(arguments?.getString("reportId")!!.toLong())
+
             val width = ViewGroup.LayoutParams.MATCH_PARENT
             val height = ViewGroup.LayoutParams.MATCH_PARENT
             dialog.window!!.setLayout(width, height)
@@ -87,38 +89,31 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
         _binding = null
     }
 
-    private fun setEditData() {
-        val content = arguments?.getString("content")
-        val title = arguments?.getString("title")
-        val imageURL = arguments?.getString("imageURL")
+    private fun setEditData(reportId: Long) {
 
-        if (content != null || imageURL != null || title != null) {
-            binding.reportDialogTitle.text = getString(R.string.title_edit_report_dialog)
-            if (content != null) {
-                binding.addReportContent.setText(content)
-            }
+        viewModel.getReportData(reportId).observe(viewLifecycleOwner) { currReport ->
+            if (currReport != null) {
 
-            if (title != null) {
-                binding.addReportTitle.setText(title)
-            }
+                binding.reportDialogTitle.text = getString(R.string.title_edit_report_dialog)
+                binding.addReportContent.setText(currReport.data)
+                binding.addReportTitle.setText(currReport.title)
 
-            if (imageURL != null) {
-                Picasso.get().load(Uri.parse(imageURL)).into(binding.addReportImageView)
+                if (currReport.image != "null"  && currReport.image != null) {
+                    Picasso.get().load(Uri.parse(currReport.image)).into(binding.addReportImageView)
+                }
+                originReport = currReport
             }
         }
     }
 
     companion object {
-        fun display(fragmentManager: FragmentManager?, reportToEdit: Report? = null) {
+        fun display(fragmentManager: FragmentManager?, reportId: Long?) {
             if (fragmentManager != null) {
                 val reportDialogFormFragment = ReportDialogFormFragment()
 
-                if (reportToEdit != null) {
+                if (reportId != null) {
                     val args = Bundle()
-                    args.putString("content", reportToEdit.data)
-                    args.putString("imageURL", reportToEdit.image)
-                    args.putString("title", reportToEdit.title)
-
+                    args.putString("reportId", reportId.toString())
                     reportDialogFormFragment.arguments = args
                 }
 
@@ -144,48 +139,35 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
 
         val user = Firebase.auth.currentUser
 
-        val reportId = arguments?.getLong("reportId")
-        val editedReportImageUrl = arguments?.getString("imageURL")
-
         if (user != null) {
-            val fileName = "reportsImages/${user.uid}/reportImage.jpg"
+            val reportToSave: Report = if (originReport === null)
+                Report(
+                    userId = user.uid,
+                    title = binding.addReportTitle.text.toString(),
+                    data = binding.addReportContent.text.toString(),
+                    lat = locationViewModel.latitude,
+                    lng = locationViewModel.longtitude,
+                )
+            else
+                originReport!!.copy(
+                    title = binding.addReportTitle.text.toString(),
+                    data = binding.addReportContent.text.toString()
+                )
+
+            val fileName = "reportsImages/${reportToSave.id}/reportImage.jpg"
 
             try {
-                var downloadUri: Uri? = null
-                if (selectedImageUri === null && editedReportImageUrl != null) {
-                    downloadUri = Uri.parse(editedReportImageUrl)
-                } else if (selectedImageUri != null) {
-                    downloadUri = ImagePickerHelper.uploadImageToFirebaseStorage(
+                if (selectedImageUri != null) {
+                    reportToSave.image = ImagePickerHelper.uploadImageToFirebaseStorage(
                         selectedImageUri, fileName, context
-                    )
+                    ).toString()
                 }
 
-                val lat = locationViewModel.latitude
-                val lng = locationViewModel.longtitude
 
-                if (reportId != null) {
-                    repostRepository.updateReport(
-                        Report(
-                            id = reportId,
-                            userId = user.uid,
-                            title = binding.addReportTitle.text.toString(),
-                            data = binding.addReportContent.text.toString(),
-                            lat = lat,
-                            lng = lng,
-                            image = downloadUri.toString(),
-                        )
-                    )
+                if (originReport === null) {
+                    repostRepository.insertReport(reportToSave)
                 } else {
-                    repostRepository.insertReport(
-                        Report(
-                            userId = user.uid,
-                            title = binding.addReportTitle.text.toString(),
-                            data = binding.addReportContent.text.toString(),
-                            lat = lat,
-                            lng = lng,
-                            image = downloadUri.toString(),
-                        )
-                    )
+                    repostRepository.updateReport(reportToSave)
                 }
 
                 withContext(Dispatchers.Main) {

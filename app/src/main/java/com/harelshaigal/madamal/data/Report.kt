@@ -13,7 +13,7 @@ data class Report (
     val lat: Double?,
     val lng: Double?,
 //    @DrawableRes
-    val image: String? = null,
+    var image: String? = null,
     val lastUpdated: Long? = null
 )
 

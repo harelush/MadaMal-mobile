@@ -20,20 +20,20 @@ class ReportViewHolder(
     fragmentManager: FragmentManager
 ) :
     RecyclerView.ViewHolder(binding.root) {
-    private var currentReport: Report? = null
+    private var currentReportId: Long? = null
 
     init {
         binding.deleteReport.setOnClickListener {
-            currentReport?.let { it1 -> DeleteReportDialog.createDeleteDialog(context, it1.id) }
+            currentReportId?.let { it1 -> DeleteReportDialog.createDeleteDialog(context, it1) }
         }
 
         binding.editReport.setOnClickListener {
-            ReportDialogFormFragment.display(fragmentManager, currentReport)
+            ReportDialogFormFragment.display(fragmentManager, currentReportId)
         }
     }
 
     fun bind(report: Report) {
-        currentReport = report
+        currentReportId = report.id
         binding.reportTitle.text = report.title
         binding.reportDate.text = report.lastUpdated?.let { Utils.formatTimestampToString(it) }
         binding.reportData.text = report.data
@@ -42,7 +42,7 @@ class ReportViewHolder(
             binding.actionButtonsContainer.visibility = View.GONE
         }
 
-        if (report.image != "null") {
+        if (report.image != "null" && report.image != null) {
             Picasso.get().load(Uri.parse(report.image)).into(binding.reportImage)
             binding.reportImage.visibility = View.VISIBLE
         }

@@ -27,7 +27,7 @@ class ReportMapDisplayFragment : BottomSheetDialogFragment() {
 
     private val binding get() = _binding!!
 
-    private var currentReport: Report? = null
+    private var currentReportId: Long? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,9 +42,9 @@ class ReportMapDisplayFragment : BottomSheetDialogFragment() {
         val root: View = binding.root
 
         requireArguments().getString("reportId")?.let {
+            currentReportId = it.toLong()
             viewModel.getReportData(it.toLong()).observe(viewLifecycleOwner) { report ->
-                currentReport = report
-                setDisplayData()
+                setDisplayData(report)
             }
         }
         return root
@@ -54,16 +54,18 @@ class ReportMapDisplayFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.deleteReport.setOnClickListener {
-            currentReport?.let { it1 ->
+
+            currentReportId?.let { it1 ->
                 DeleteReportDialog.createDeleteDialog(
                     view.context,
-                    it1.id
+                    it1
                 )
             }
+
         }
 
         binding.editReport.setOnClickListener {
-            ReportDialogFormFragment.display(parentFragmentManager, currentReport)
+            ReportDialogFormFragment.display(parentFragmentManager, currentReportId)
         }
     }
 
@@ -72,18 +74,18 @@ class ReportMapDisplayFragment : BottomSheetDialogFragment() {
         _binding = null
     }
 
-    private fun setDisplayData() {
-        binding.reportData.text = currentReport?.data
-        binding.reportTitle.text = currentReport?.data
+    private fun setDisplayData(currentReport: Report) {
+        binding.reportData.text = currentReport.data
+        binding.reportTitle.text = currentReport.data
         binding.reportLastUpdateDate.text =
-            currentReport?.lastUpdated?.let { Utils.formatTimestampToString(it) }
+            currentReport.lastUpdated?.let { Utils.formatTimestampToString(it) }
 
-        if (currentReport?.image != "null" && currentReport?.image != null) {
-            Picasso.get().load(Uri.parse(currentReport?.image)).into(binding.reportImage)
+        if (currentReport.image != "null" && currentReport.image != null) {
+            Picasso.get().load(Uri.parse(currentReport.image)).into(binding.reportImage)
             binding.reportImage.visibility = View.VISIBLE
         }
 
-        if (Firebase.auth.currentUser?.uid != currentReport?.userId) {
+        if (Firebase.auth.currentUser?.uid != currentReport.userId) {
             binding.actionButtonsContainer.visibility = View.GONE
         }
     }
