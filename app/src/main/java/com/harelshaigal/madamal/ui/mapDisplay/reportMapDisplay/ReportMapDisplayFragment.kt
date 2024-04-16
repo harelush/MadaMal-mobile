@@ -70,6 +70,8 @@ class ReportMapDisplayFragment : BottomSheetDialogFragment() {
 
         if (imageURL != null) {
             Picasso.get().load(Uri.parse(imageURL)).into(binding.reportImage)
+        } else {
+            binding.reportImage.visibility = View.GONE
         }
 
     }
