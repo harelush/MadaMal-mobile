@@ -1,11 +1,13 @@
 package com.harelshaigal.madamal.ui.mapDisplay.reportsMap
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
+import com.harelshaigal.madamal.data.Report
+import com.harelshaigal.madamal.data.ReportRepository
 
 class ReportsMapViewModel : ViewModel() {
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is report map Fragment"
-    }
-    val text: LiveData<String> = _text}
+    private val repository: ReportRepository = ReportRepository()
+
+    val reportList: LiveData<List<Report>> =  repository.getAllReports()
+}

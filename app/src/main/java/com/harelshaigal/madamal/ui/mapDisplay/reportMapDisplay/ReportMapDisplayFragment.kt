@@ -8,8 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.harelshaigal.madamal.data.Report
 import com.harelshaigal.madamal.databinding.FragmentReportMapDisplayBinding
+import com.harelshaigal.madamal.helpers.Utils
 import com.harelshaigal.madamal.ui.reportDialogs.DeleteReportDialog
 import com.harelshaigal.madamal.ui.reportDialogs.reportDialogForm.ReportDialogFormFragment
 import com.squareup.picasso.Picasso
@@ -24,6 +27,8 @@ class ReportMapDisplayFragment : BottomSheetDialogFragment() {
 
     private val binding get() = _binding!!
 
+    private var currentReportId: Long? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,23 +41,32 @@ class ReportMapDisplayFragment : BottomSheetDialogFragment() {
         _binding = FragmentReportMapDisplayBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        requireArguments().getString("reportId")?.let {
+            currentReportId = it.toLong()
+            viewModel.getReportData(it.toLong()).observe(viewLifecycleOwner) { report ->
+                setDisplayData(report)
+            }
+        }
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        binding.deleteReport.setOnClickListener {
-//            DeleteReportDialog.createDeleteDialog(view.context) {
-//                // Perform delete operation here
-//            }
-//        }
+        binding.deleteReport.setOnClickListener {
 
-        binding.editReport.setOnClickListener {
-            ReportDialogFormFragment.display(parentFragmentManager)
+            currentReportId?.let { it1 ->
+                DeleteReportDialog.createDeleteDialog(
+                    view.context,
+                    it1
+                )
+            }
+
         }
 
-        setDisplayData()
+        binding.editReport.setOnClickListener {
+            ReportDialogFormFragment.display(parentFragmentManager, currentReportId)
+        }
     }
 
     override fun onDestroyView() {
@@ -60,32 +74,31 @@ class ReportMapDisplayFragment : BottomSheetDialogFragment() {
         _binding = null
     }
 
-    private fun setDisplayData() {
-        val content = arguments?.getString("content")
-        val imageURL = arguments?.getString("imageURL")
+    private fun setDisplayData(currentReport: Report) {
+        binding.reportData.text = currentReport.data
+        binding.reportTitle.text = currentReport.data
+        binding.reportLastUpdateDate.text =
+            currentReport.lastUpdated?.let { Utils.formatTimestampToString(it) }
 
-        if (content != null) {
-            binding.reportData.text = content
+        if (currentReport.image != "null" && currentReport.image != null) {
+            Picasso.get().load(Uri.parse(currentReport.image)).into(binding.reportImage)
+            binding.reportImage.visibility = View.VISIBLE
         }
 
-        if (imageURL != null) {
-            Picasso.get().load(Uri.parse(imageURL)).into(binding.reportImage)
+        if (Firebase.auth.currentUser?.uid != currentReport.userId) {
+            binding.actionButtonsContainer.visibility = View.GONE
         }
-
     }
 
     companion object {
-        fun display(fragmentManager: FragmentManager?, reportToDisplay: Report? = null) {
+        fun display(fragmentManager: FragmentManager?, reportId: Long) {
             if (fragmentManager != null) {
                 val reportMapDisplayFragment = ReportMapDisplayFragment()
 
-                if (reportToDisplay != null) {
-                    val args = Bundle()
-                    args.putString("content", reportToDisplay.data)
-                    args.putString("imageURL", reportToDisplay.image)
+                val args = Bundle()
+                args.putString("reportId", reportId.toString())
 
-                    reportMapDisplayFragment.arguments = args
-                }
+                reportMapDisplayFragment.arguments = args
 
                 reportMapDisplayFragment.show(
                     fragmentManager,

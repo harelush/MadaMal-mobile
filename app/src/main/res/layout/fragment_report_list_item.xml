@@ -1,22 +1,25 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     app:cardCornerRadius="8dp"
-    app:cardElevation="4dp">
+    app:cardElevation="4dp"
+    app:contentPadding="8dp"
+    app:contentPaddingBottom="16dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/reportItemCard"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/headerContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layoutDirection="inherit"
             app:layout_constraintBottom_toTopOf="@+id/report_data"
-            android:layoutDirection="rtl"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -28,8 +31,8 @@
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.button.MaterialButton
@@ -64,17 +67,20 @@
                 android:layout_height="wrap_content"
                 android:background="#00FFFFFF"
                 android:backgroundTint="#00FFFFFF"
-                android:layoutDirection="rtl"
+                android:gravity="right"
                 android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:textAlignment="gravity"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/report_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="end"
                     android:text="@string/palceholder_title"
+                    android:textAlignment="gravity"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -82,9 +88,12 @@
                     android:id="@+id/report_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="start"
                     android:text="@string/palceholder_date"
+                    android:textAlignment="gravity"
                     android:textColor="@android:color/darker_gray"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    tools:ignore="RtlHardcoded" />
 
             </LinearLayout>
 
@@ -94,6 +103,7 @@
             android:id="@+id/report_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:textDirection="rtl"
             android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@id/reportImage"
@@ -109,6 +119,7 @@
             android:contentDescription="@string/report_list_item_display_image"
             android:scaleType="fitCenter"
             android:src="@drawable/default_doctor_image"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

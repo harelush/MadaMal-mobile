@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:padding="16dp"
     tools:context=".ui.mapDisplay.reportMapDisplay.ReportMapDisplayFragment">
 
     <com.google.android.material.bottomsheet.BottomSheetDragHandleView
@@ -20,6 +21,7 @@
         android:id="@+id/headerContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:layoutDirection="rtl"
         app:layout_constraintBottom_toTopOf="@+id/report_data"
         app:layout_constraintEnd_toEndOf="parent"
@@ -84,7 +86,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/report_creation_date"
+                android:id="@+id/report_last_update_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/palceholder_date"
@@ -99,9 +101,9 @@
         android:id="@+id/report_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@string/palceholder_title"
         android:textDirection="rtl"
         android:textSize="24sp"
-        android:text="@string/palceholder_title"
         app:layout_constraintBottom_toTopOf="@id/reportImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -114,7 +116,7 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/report_list_item_display_image"
         android:scaleType="fitCenter"
-        android:src="@drawable/default_doctor_image"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
