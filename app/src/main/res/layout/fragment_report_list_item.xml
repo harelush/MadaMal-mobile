@@ -6,7 +6,8 @@
     android:layout_margin="8dp"
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp"
-    app:contentPadding="8dp">
+    app:contentPadding="8dp"
+    app:contentPaddingBottom="16dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/reportItemCard"
@@ -102,6 +103,7 @@
             android:id="@+id/report_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:textDirection="rtl"
             android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@id/reportImage"
@@ -117,6 +119,7 @@
             android:contentDescription="@string/report_list_item_display_image"
             android:scaleType="fitCenter"
             android:src="@drawable/default_doctor_image"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

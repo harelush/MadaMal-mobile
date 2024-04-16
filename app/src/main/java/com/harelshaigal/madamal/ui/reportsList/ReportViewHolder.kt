@@ -42,11 +42,9 @@ class ReportViewHolder(
             binding.actionButtonsContainer.visibility = View.GONE
         }
 
-        if (report.image != null) {
+        if (report.image != "null") {
             Picasso.get().load(Uri.parse(report.image)).into(binding.reportImage)
-        } else {
-            binding.reportImage.visibility = View.GONE
+            binding.reportImage.visibility = View.VISIBLE
         }
-
     }
 }
