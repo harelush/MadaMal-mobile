@@ -3,8 +3,8 @@ package com.harelshaigal.madamal.ui.reportsList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
-import com.harelshaigal.madamal.data.Report
-import com.harelshaigal.madamal.data.ReportRepository
+import com.harelshaigal.madamal.data.report.Report
+import com.harelshaigal.madamal.data.report.ReportRepository
 
 class ReportsListViewModel : ViewModel() {
 

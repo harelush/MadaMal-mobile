@@ -1,4 +1,4 @@
-package com.harelshaigal.madamal.data
+package com.harelshaigal.madamal.data.report
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -12,7 +12,6 @@ data class Report (
     val data: String,
     val lat: Double?,
     val lng: Double?,
-//    @DrawableRes
     var image: String? = null,
     val lastUpdated: Long? = System.currentTimeMillis()
 )

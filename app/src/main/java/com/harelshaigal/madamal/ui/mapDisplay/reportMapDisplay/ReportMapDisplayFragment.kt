@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
-import com.harelshaigal.madamal.data.Report
+import com.harelshaigal.madamal.data.report.Report
 import com.harelshaigal.madamal.databinding.FragmentReportMapDisplayBinding
 import com.harelshaigal.madamal.helpers.Utils
 import com.harelshaigal.madamal.ui.reportDialogs.DeleteReportDialog

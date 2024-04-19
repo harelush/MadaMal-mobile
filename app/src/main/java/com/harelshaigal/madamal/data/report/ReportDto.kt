@@ -1,4 +1,4 @@
-package com.harelshaigal.madamal.data
+package com.harelshaigal.madamal.data.report
 
 data class ReportDto (
     val id: Long = 0L,

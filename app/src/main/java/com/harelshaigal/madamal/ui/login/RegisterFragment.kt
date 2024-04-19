@@ -13,10 +13,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.harelshaigal.madamal.MainActivity
-import com.harelshaigal.madamal.data.User
+import com.harelshaigal.madamal.data.user.User
+import com.harelshaigal.madamal.data.user.UserRepository
 import com.harelshaigal.madamal.databinding.FragmentRegisterBinding
 import com.harelshaigal.madamal.helpers.ImagePickerHelper
 import com.harelshaigal.madamal.helpers.ToastHelper
+import com.harelshaigal.madamal.helpers.Utils
 import com.wajahatkarim3.easyvalidation.core.view_ktx.validator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +33,8 @@ class RegisterFragment : Fragment(), ImagePickerHelper.ImagePickerCallback {
     private val auth = Firebase.auth
     private val binding get() = _binding!!
     private var selectedImageUri: Uri? = null
+
+    private val userRepository: UserRepository = UserRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,10 +78,10 @@ class RegisterFragment : Fragment(), ImagePickerHelper.ImagePickerCallback {
             try {
                 auth.createUserWithEmailAndPassword(email, password)
                     .await().user?.let { firebaseUser ->
-                    val user = User(uid = firebaseUser.uid, fullName = fullName, email = email)
-                    // Save the user info to Firestore
-                    saveUserToFirestore(user)
-                }
+                        val user = User(uid = firebaseUser.uid, fullName = fullName, email = email)
+                        // Save the user info to Firestore
+                        saveUserToFirestore(user)
+                    }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     ToastHelper.showToast("Registration failed: ${e.message}", context)
@@ -94,13 +98,14 @@ class RegisterFragment : Fragment(), ImagePickerHelper.ImagePickerCallback {
 
     private suspend fun saveUserToFirestore(user: User) {
         try {
-            val firestore = FirebaseFirestore.getInstance()
-            firestore.collection("users").document(user.uid!!).set(user).await()
-            selectedImageUri?.let { uri ->
-                val storageRef =
-                    FirebaseStorage.getInstance().reference.child("images/${user.uid}/profile.jpg")
-                storageRef.putFile(uri).await()
+            if (selectedImageUri != null) {
+                user.imageUri = ImagePickerHelper.uploadImageToFirebaseStorage(
+                    selectedImageUri, Utils.getUserImageName(user.uid)
+                ).toString()
             }
+
+            userRepository.insertUser(user)
+
             withContext(Dispatchers.Main) {
                 navigateToMainActivity()
                 showProgressBar(false)

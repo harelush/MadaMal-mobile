@@ -14,18 +14,19 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.harelshaigal.madamal.databinding.FragmentUserProfileBinding
 import com.harelshaigal.madamal.helpers.ImagePickerHelper
+import com.harelshaigal.madamal.ui.reportDialogs.reportDialogForm.ReportDialogFormFragment
+import com.harelshaigal.madamal.ui.reportsList.ReportListFragment
 import com.squareup.picasso.Picasso
 import com.wajahatkarim3.easyvalidation.core.view_ktx.nonEmpty
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class UserProfileFragment : Fragment(), ImagePickerHelper.ImagePickerCallback {
     private lateinit var viewModel: UserProfileViewModel
-    private var _binding: FragmentUserProfileBinding? = null
-
     private lateinit var imagePickerHelper: ImagePickerHelper
-
     private var selectedImageUri: Uri? = null
-
-
+    private var _binding: FragmentUserProfileBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -43,65 +44,62 @@ class UserProfileFragment : Fragment(), ImagePickerHelper.ImagePickerCallback {
             imagePickerHelper.openImagePicker()
         }
 
-        val user = Firebase.auth.currentUser
-        val userUID = user?.uid
+        viewModel.fetchUserData(Firebase.auth.currentUser!!.uid)
 
         // Observe the user LiveData from the ViewModel
         viewModel.user.observe(viewLifecycleOwner) { user ->
             // Update UI
             binding.userProfileEmailText.setText(user?.email ?: "")
             binding.userProfileFullNameText.setText(user?.fullName ?: "")
-            binding.editUserButton
-        }
-
-        viewModel.imageUrl.observe(viewLifecycleOwner) { imageUrl ->
-            if (imageUrl != null && imageUrl.isNotEmpty()) {
-                Picasso.get().load(imageUrl).into(binding.userProfileProfileImageView)
-            } else {
-                // Can load here deafult image
+            if (user?.imageUri != null) {
+                Picasso.get().load(user.imageUri).into(binding.userProfileProfileImageView)
             }
         }
 
-        viewModel.fetchUserData(userUID.toString())
-        viewModel.fetchUserImageUrl(userUID.toString())
 
+
+        return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.editUserButton.setOnClickListener {
-            binding.registerProgressBar.visibility = View.VISIBLE
-
-            selectedImageUri?.let { uri ->
-                viewModel.uploadUserImage(uri)
+            CoroutineScope(Dispatchers.IO).launch {
+                updateUser()
             }
+        }
+    }
 
-            val newName = binding.userProfileFullNameText.text.toString()
-            if (newName.nonEmpty()) {
-                viewModel.updateUserDetails(userUID.toString(), newName)
-            }
+    private suspend fun updateUser () {
+        binding.registerProgressBar.visibility = View.VISIBLE
 
-            viewModel.updateStatus.observe(viewLifecycleOwner) { status ->
-                when (status) {
-                    OperationStatus.LOADING -> {
-                        binding.registerProgressBar.visibility = View.VISIBLE
-                    }
-                    OperationStatus.SUCCESS -> {
-                        binding.registerProgressBar.visibility = View.GONE
-                        Toast.makeText(context, "שינוי הנתונים נשמר בהצלחה", Toast.LENGTH_SHORT)
-                            .show()
-                    }
+        val newName = binding.userProfileFullNameText.text.toString()
+        if (newName.nonEmpty()) {
+            viewModel.updateUserDetails(newName, selectedImageUri)
+        }
 
-                    OperationStatus.FAILURE -> {
-                        binding.registerProgressBar.visibility =
-                            View.GONE
-                        Toast.makeText(
-                            context,
-                            "שגיאה בשמירת הנתונים, נא לנסות שוב",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+        viewModel.updateStatus.observe(viewLifecycleOwner) { status ->
+            when (status) {
+                OperationStatus.LOADING -> {
+                    binding.registerProgressBar.visibility = View.VISIBLE
+                }
+                OperationStatus.SUCCESS -> {
+                    binding.registerProgressBar.visibility = View.GONE
+                    Toast.makeText(context, "שינוי הנתונים נשמר בהצלחה", Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+                OperationStatus.FAILURE -> {
+                    binding.registerProgressBar.visibility =
+                        View.GONE
+                    Toast.makeText(
+                        context,
+                        "שגיאה בשמירת הנתונים, נא לנסות שוב",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
-
-        return root
     }
 
     override fun onDestroyView() {

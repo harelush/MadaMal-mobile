@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
-import com.harelshaigal.madamal.data.Report
+import com.harelshaigal.madamal.data.report.Report
 import com.harelshaigal.madamal.databinding.FragmentReportListItemBinding
 import com.harelshaigal.madamal.helpers.Utils
 import com.harelshaigal.madamal.ui.reportDialogs.DeleteReportDialog
