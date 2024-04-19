@@ -10,12 +10,8 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.harelshaigal.madamal.databinding.FragmentUserProfileBinding
 import com.harelshaigal.madamal.helpers.ImagePickerHelper
-import com.harelshaigal.madamal.ui.reportDialogs.reportDialogForm.ReportDialogFormFragment
-import com.harelshaigal.madamal.ui.reportsList.ReportListFragment
 import com.squareup.picasso.Picasso
 import com.wajahatkarim3.easyvalidation.core.view_ktx.nonEmpty
 import kotlinx.coroutines.CoroutineScope
@@ -44,19 +40,15 @@ class UserProfileFragment : Fragment(), ImagePickerHelper.ImagePickerCallback {
             imagePickerHelper.openImagePicker()
         }
 
-        viewModel.fetchUserData(Firebase.auth.currentUser!!.uid)
+        viewModel.fetchUserData()
 
-        // Observe the user LiveData from the ViewModel
         viewModel.user.observe(viewLifecycleOwner) { user ->
-            // Update UI
             binding.userProfileEmailText.setText(user?.email ?: "")
             binding.userProfileFullNameText.setText(user?.fullName ?: "")
             if (user?.imageUri != null) {
                 Picasso.get().load(user.imageUri).into(binding.userProfileProfileImageView)
             }
         }
-
-
 
         return root
     }
@@ -68,21 +60,13 @@ class UserProfileFragment : Fragment(), ImagePickerHelper.ImagePickerCallback {
                 updateUser()
             }
         }
-    }
-
-    private suspend fun updateUser () {
-        binding.registerProgressBar.visibility = View.VISIBLE
-
-        val newName = binding.userProfileFullNameText.text.toString()
-        if (newName.nonEmpty()) {
-            viewModel.updateUserDetails(newName, selectedImageUri)
-        }
 
         viewModel.updateStatus.observe(viewLifecycleOwner) { status ->
             when (status) {
                 OperationStatus.LOADING -> {
                     binding.registerProgressBar.visibility = View.VISIBLE
                 }
+
                 OperationStatus.SUCCESS -> {
                     binding.registerProgressBar.visibility = View.GONE
                     Toast.makeText(context, "שינוי הנתונים נשמר בהצלחה", Toast.LENGTH_SHORT)
@@ -99,6 +83,13 @@ class UserProfileFragment : Fragment(), ImagePickerHelper.ImagePickerCallback {
                     ).show()
                 }
             }
+        }
+    }
+
+    private suspend fun updateUser() {
+        val newName = binding.userProfileFullNameText.text.toString()
+        if (newName.nonEmpty()) {
+            viewModel.updateUserDetails(newName, selectedImageUri)
         }
     }
 

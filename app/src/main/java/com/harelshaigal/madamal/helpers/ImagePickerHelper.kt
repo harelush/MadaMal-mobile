@@ -1,6 +1,5 @@
 package com.harelshaigal.madamal.helpers
 
-import android.content.Context
 import android.net.Uri
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
