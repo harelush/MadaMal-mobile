@@ -15,10 +15,11 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.harelshaigal.madamal.R
 import com.harelshaigal.madamal.data.LocationDataViewModel
-import com.harelshaigal.madamal.data.Report
-import com.harelshaigal.madamal.data.ReportRepository
+import com.harelshaigal.madamal.data.report.Report
+import com.harelshaigal.madamal.data.report.ReportRepository
 import com.harelshaigal.madamal.databinding.FragmentReportDialogFormBinding
 import com.harelshaigal.madamal.helpers.ImagePickerHelper
+import com.harelshaigal.madamal.helpers.Utils
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -157,12 +158,10 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
                     data = binding.addReportContent.text.toString()
                 )
 
-            val fileName = "reportsImages/${reportToSave.id}/reportImage.jpg"
-
             try {
                 if (selectedImageUri != null) {
                     reportToSave.image = ImagePickerHelper.uploadImageToFirebaseStorage(
-                        selectedImageUri, fileName, context
+                        selectedImageUri, Utils.getReportImageName(reportToSave.id.toString())
                     ).toString()
                 }
 

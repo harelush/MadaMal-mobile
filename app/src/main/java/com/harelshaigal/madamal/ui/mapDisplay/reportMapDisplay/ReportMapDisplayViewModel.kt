@@ -1,7 +1,7 @@
 package com.harelshaigal.madamal.ui.mapDisplay.reportMapDisplay
 
 import androidx.lifecycle.ViewModel
-import com.harelshaigal.madamal.data.ReportRepository
+import com.harelshaigal.madamal.data.report.ReportRepository
 
 class ReportMapDisplayViewModel : ViewModel() {
     private val repository: ReportRepository = ReportRepository()

@@ -10,5 +10,8 @@ class Utils {
             val format = SimpleDateFormat("dd MMMM yyyy HH:mm:ss", Locale.getDefault())
             return format.format(date)
         }
+
+        fun getUserImageName(id: String) = "images/${id}/profile.jpg"
+        fun getReportImageName(id: String) = "reportsImages/${id}/reportImage.jpg"
     }
 }

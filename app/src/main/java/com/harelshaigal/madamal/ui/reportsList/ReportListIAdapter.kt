@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.ListAdapter
-import com.harelshaigal.madamal.data.Report
+import com.harelshaigal.madamal.data.report.Report
 import com.harelshaigal.madamal.databinding.FragmentReportListItemBinding
 
 class ReportListIAdapter(private val fragmentManager: FragmentManager) : ListAdapter<Report, ReportViewHolder>(ReportDiffCallback()) {

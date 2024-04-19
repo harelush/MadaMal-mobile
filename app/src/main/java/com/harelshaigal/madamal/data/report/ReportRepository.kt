@@ -1,9 +1,10 @@
-package com.harelshaigal.madamal.data
+package com.harelshaigal.madamal.data.report
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
+import com.harelshaigal.madamal.data.AppLocalDb
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -110,10 +111,6 @@ class ReportRepository() {
 
     fun getReportById(id: Long): LiveData<Report> {
         return reportDao.getReportById(id)
-    }
-
-    fun getReportsByUserId(userId: String): LiveData<List<Report>> {
-        return reportDao.getReportsByUserId(userId)
     }
 
     fun deleteReportById(id: Long) {
