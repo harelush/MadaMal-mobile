@@ -1,16 +1,22 @@
 package com.harelshaigal.madamal.ui.reportDialogs.reportDialogForm
 
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.harelshaigal.madamal.R
@@ -38,6 +44,9 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
     private lateinit var locationViewModel: LocationDataViewModel
 
     private var originReport: Report? = null
+    private lateinit var titleTextInput: TextInputLayout
+    private lateinit var reportBodyTextInput: TextInputLayout
+    private lateinit var saveReportButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -56,6 +65,16 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        titleTextInput = binding.addReportTitleLayout
+        reportBodyTextInput = binding.addReportContentLayout
+        saveReportButton = binding.saveButton
+
+        // Add TextWatcher to monitor changes in TextInputEditText
+        titleTextInput.editText?.addTextChangedListener(textWatcher)
+        reportBodyTextInput.editText?.addTextChangedListener(textWatcher)
+
+        disableSaveButton()
 
         binding.buttonClose.setOnClickListener {
             dismiss()
@@ -88,6 +107,25 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun updateTextInputLayoutBorder(textInputLayout: TextInputLayout, isValid: Boolean) {
+        if (!isValid) {
+            textInputLayout.boxStrokeColor = Color.RED
+        } else {
+            textInputLayout.boxStrokeColor = Color.GRAY
+        }
+    }
+    private fun enableSaveButton() {
+        saveReportButton.isEnabled = true
+        saveReportButton.alpha = 1.0f
+        saveReportButton.setBackgroundColor(Color.parseColor("#FF6750A3"))
+    }
+
+    private fun disableSaveButton() {
+        saveReportButton.isEnabled = false
+        saveReportButton.alpha = 0.5f
+        saveReportButton.setBackgroundColor(Color.GRAY)
     }
 
     private fun setEditData(reportId: Long) {
@@ -131,6 +169,35 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
 
     override fun selectedImageExtraLogic(uri: Uri?) {
         uri.also { selectedImageUri = it }
+    }
+
+    private val textWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+            validateFields()
+        }
+    }
+
+    private fun validateFields() {
+        val titleText = titleTextInput.editText?.text.toString().trim()
+        val reportBodyText = reportBodyTextInput.editText?.text.toString().trim()
+
+        val titleTextValidator = titleText.isNotEmpty();
+        val reportBodyTextValidator = reportBodyText.isNotEmpty();
+
+        updateTextInputLayoutBorder(titleTextInput, titleTextValidator)
+        updateTextInputLayoutBorder(reportBodyTextInput, reportBodyTextValidator)
+
+        if (titleTextValidator && reportBodyTextValidator) {
+            enableSaveButton()
+        } else {
+            disableSaveButton()
+        }
     }
 
     private suspend fun saveReport() {
