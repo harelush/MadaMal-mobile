@@ -101,7 +101,7 @@ class ReportsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerCli
 
     override fun onMarkerClick(marker: Marker): Boolean {
         marker.let {
-            ReportMapDisplayFragment.display(getParentFragmentManager(), it.tag as Long)
+            ReportMapDisplayFragment.display(getParentFragmentManager(), it.tag as String)
             return true
         }
     }

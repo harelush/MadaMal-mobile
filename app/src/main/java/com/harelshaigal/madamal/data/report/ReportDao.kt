@@ -16,9 +16,6 @@ interface ReportDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertReport(report: Report): Long
 
-    @Insert
-    fun insertReports(reports: List<Report>): LongArray
-
     @Delete
     fun deleteReport(report: Report)
 
@@ -26,13 +23,13 @@ interface ReportDao {
     fun getLatestTimestamp(): Long?
 
     @Query("SELECT * FROM Report WHERE id = :id")
-    fun getReportById(id: Long): LiveData<Report>
+    fun getReportById(id: String): LiveData<Report>
 
     @Query("SELECT * FROM Report WHERE userId = :userId ORDER BY lastUpdated DESC")
     fun getReportsByUserId(userId: String): LiveData<List<Report>>
 
     @Query("DELETE FROM Report WHERE id = :id")
-    fun deleteReportById(id: Long)
+    fun deleteReportById(id: String)
 
     @Update
     fun updateReport(report: Report)

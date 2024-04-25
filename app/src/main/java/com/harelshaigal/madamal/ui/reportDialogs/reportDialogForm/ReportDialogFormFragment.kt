@@ -15,17 +15,16 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.harelshaigal.madamal.R
 import com.harelshaigal.madamal.data.LocationDataViewModel
 import com.harelshaigal.madamal.data.report.Report
+import com.harelshaigal.madamal.data.report.ReportDto
 import com.harelshaigal.madamal.data.report.ReportRepository
 import com.harelshaigal.madamal.databinding.FragmentReportDialogFormBinding
 import com.harelshaigal.madamal.helpers.ImagePickerHelper
-import com.harelshaigal.madamal.helpers.Utils
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -96,7 +95,7 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
         val dialog = dialog
         if (dialog != null) {
             if (arguments?.getString("reportId") != null)
-                setEditData(arguments?.getString("reportId")!!.toLong())
+                setEditData(arguments?.getString("reportId")!!)
 
             val width = ViewGroup.LayoutParams.MATCH_PARENT
             val height = ViewGroup.LayoutParams.MATCH_PARENT
@@ -128,7 +127,7 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
         saveReportButton.setBackgroundColor(Color.GRAY)
     }
 
-    private fun setEditData(reportId: Long) {
+    private fun setEditData(reportId: String) {
 
         viewModel.getReportData(reportId).observe(viewLifecycleOwner) { currReport ->
             if (currReport != null) {
@@ -146,7 +145,7 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
     }
 
     companion object {
-        fun display(fragmentManager: FragmentManager?, reportId: Long?) {
+        fun display(fragmentManager: FragmentManager?, reportId: String?) {
             if (fragmentManager != null) {
                 val reportDialogFormFragment = ReportDialogFormFragment()
 
@@ -187,8 +186,8 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
         val titleText = titleTextInput.editText?.text.toString().trim()
         val reportBodyText = reportBodyTextInput.editText?.text.toString().trim()
 
-        val titleTextValidator = titleText.isNotEmpty();
-        val reportBodyTextValidator = reportBodyText.isNotEmpty();
+        val titleTextValidator = titleText.isNotEmpty()
+        val reportBodyTextValidator = reportBodyText.isNotEmpty()
 
         updateTextInputLayoutBorder(titleTextInput, titleTextValidator)
         updateTextInputLayoutBorder(reportBodyTextInput, reportBodyTextValidator)
@@ -211,8 +210,8 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
             val lat = locationViewModel.latitude
             val lng = locationViewModel.longtitude
 
-            val reportToSave: Report = if (originReport === null)
-                Report(
+            val reportToSave: ReportDto = if (originReport === null)
+                ReportDto(
                     userId = user.uid,
                     title = binding.addReportTitle.text.toString(),
                     data = binding.addReportContent.text.toString(),
@@ -220,23 +219,27 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
                     lng = lng,
                 )
             else
-                originReport!!.copy(
+                ReportDto(
+                    image = originReport!!.image,
+                    userId = originReport!!.userId,
+                    lat= originReport!!.lat,
+                    lng = originReport!!.lng,
                     title = binding.addReportTitle.text.toString(),
-                    data = binding.addReportContent.text.toString()
+                    data = binding.addReportContent.text.toString(),
                 )
 
             try {
                 if (selectedImageUri != null) {
-                    reportToSave.image = ImagePickerHelper.uploadImageToFirebaseStorage(
-                        selectedImageUri, Utils.getReportImageName(reportToSave.id.toString())
-                    ).toString()
+//                    reportToSave.image = ImagePickerHelper.uploadImageToFirebaseStorage(
+//                        selectedImageUri, Utils.getReportImageName(reportToSave.id.toString())
+//                    ).toString()
                 }
 
 
                 if (originReport === null) {
-                    repostRepository.insertReport(reportToSave)
+                    repostRepository.addReport(reportToSave)
                 } else {
-                    repostRepository.updateReport(reportToSave)
+                    repostRepository.updateReport(reportToSave, originReport!!.id)
                 }
 
                 withContext(Dispatchers.Main) {

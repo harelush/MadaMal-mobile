@@ -27,7 +27,7 @@ class ReportMapDisplayFragment : BottomSheetDialogFragment() {
 
     private val binding get() = _binding!!
 
-    private var currentReportId: Long? = null
+    private var currentReportId: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,8 +42,8 @@ class ReportMapDisplayFragment : BottomSheetDialogFragment() {
         val root: View = binding.root
 
         requireArguments().getString("reportId")?.let {
-            currentReportId = it.toLong()
-            viewModel.getReportData(it.toLong()).observe(viewLifecycleOwner) { report ->
+            currentReportId = it
+            viewModel.getReportData(it).observe(viewLifecycleOwner) { report ->
                 setDisplayData(report)
             }
         }
@@ -91,12 +91,12 @@ class ReportMapDisplayFragment : BottomSheetDialogFragment() {
     }
 
     companion object {
-        fun display(fragmentManager: FragmentManager?, reportId: Long) {
+        fun display(fragmentManager: FragmentManager?, reportId: String) {
             if (fragmentManager != null) {
                 val reportMapDisplayFragment = ReportMapDisplayFragment()
 
                 val args = Bundle()
-                args.putString("reportId", reportId.toString())
+                args.putString("reportId", reportId)
 
                 reportMapDisplayFragment.arguments = args
 
