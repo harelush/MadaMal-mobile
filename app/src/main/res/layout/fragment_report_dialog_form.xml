@@ -54,7 +54,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogAppBar">
 
-        <!-- TextInputLayout for Title -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/addReport_title_layout"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -90,7 +89,7 @@
             app:boxStrokeWidthFocused="2dp"
             app:endIconMode="none"
             app:hintEnabled="true"
-            app:layout_constraintBottom_toTopOf="@id/addReport_imageView"
+            app:layout_constraintBottom_toTopOf="@id/Image_Button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/addReport_title_layout"
@@ -105,17 +104,31 @@
                 android:textColor="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/Image_Button"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/add_image_text"
+            app:backgroundTint="@color/light_blue_900"
+            app:layout_constraintBottom_toTopOf="@id/addReport_imageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/addReport_content_layout" />
+
         <ImageView
             android:id="@+id/addReport_imageView"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:layout_margin="16dp"
             android:contentDescription="@string/profile_pic"
-            android:src="@drawable/default_doctor_image"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/addReport_content_layout" />
+            app:layout_constraintTop_toBottomOf="@id/Image_Button" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ProgressBar

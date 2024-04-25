@@ -79,7 +79,7 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
             dismiss()
         }
 
-        binding.addReportImageView.setOnClickListener {
+        binding.ImageButton.setOnClickListener {
             imagePickerHelper.openImagePicker()
         }
 
@@ -128,7 +128,6 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
     }
 
     private fun setEditData(reportId: String) {
-
         viewModel.getReportData(reportId).observe(viewLifecycleOwner) { currReport ->
             if (currReport != null) {
 
@@ -138,6 +137,7 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
 
                 if (currReport.image != "null"  && currReport.image != null) {
                     Picasso.get().load(Uri.parse(currReport.image)).into(binding.addReportImageView)
+                    binding.addReportImageView.visibility = View.VISIBLE
                 }
                 originReport = currReport
             }
@@ -167,7 +167,10 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
     }
 
     override fun selectedImageExtraLogic(uri: Uri?) {
-        uri.also { selectedImageUri = it }
+        uri.also {
+            selectedImageUri = it
+            binding.addReportImageView.visibility = View.VISIBLE
+        }
     }
 
     private val textWatcher = object : TextWatcher {
