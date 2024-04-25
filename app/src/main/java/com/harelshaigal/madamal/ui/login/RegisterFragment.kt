@@ -9,9 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
 import com.harelshaigal.madamal.MainActivity
 import com.harelshaigal.madamal.data.user.User
 import com.harelshaigal.madamal.data.user.UserRepository
@@ -64,7 +62,7 @@ class RegisterFragment : Fragment(), ImagePickerHelper.ImagePickerCallback {
             (activity as? LoginActivity)?.replaceFragment(LoginFragment())
         }
 
-        binding.registerProfileImageView.setOnClickListener {
+        binding.ImageButton.setOnClickListener {
             imagePickerHelper.openImagePicker()
         }
     }
@@ -142,6 +140,9 @@ class RegisterFragment : Fragment(), ImagePickerHelper.ImagePickerCallback {
     override fun getImageViewForLoad(): ImageView = binding.registerProfileImageView
 
     override fun selectedImageExtraLogic(uri: Uri?) {
-        uri.also { selectedImageUri = it }
+        uri.also {
+            selectedImageUri = it
+            binding.registerProfileImageView.visibility = View.VISIBLE
+        }
     }
 }

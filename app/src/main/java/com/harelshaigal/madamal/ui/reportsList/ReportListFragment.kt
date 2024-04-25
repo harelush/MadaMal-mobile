@@ -55,6 +55,14 @@ class ReportListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getReportList(arguments?.getString(PARAM_KEY)).observe(viewLifecycleOwner) {
+            if (it.isEmpty()) {
+                binding.reportList.visibility= View.GONE
+                binding.noReportText.visibility= View.VISIBLE
+            } else {
+                binding.reportList.visibility= View.VISIBLE
+                binding.noReportText.visibility= View.GONE
+            }
+
             reportAdapter.submitList(it.toMutableList())
         }
 

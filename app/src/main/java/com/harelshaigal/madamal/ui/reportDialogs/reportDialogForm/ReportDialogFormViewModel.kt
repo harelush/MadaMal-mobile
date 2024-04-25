@@ -6,5 +6,5 @@ import com.harelshaigal.madamal.data.report.ReportRepository
 class ReportDialogFormViewModel : ViewModel() {
     private val repository: ReportRepository = ReportRepository()
 
-    fun getReportData(reportId: Long) = repository.getReportById(reportId)
+    fun getReportData(reportId: String) = repository.getReportById(reportId)
 }

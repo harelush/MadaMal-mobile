@@ -11,7 +11,7 @@ class Utils {
             return format.format(date)
         }
 
-        fun getUserImageName(id: String) = "images/${id}/profile.jpg"
+        fun getUserImageName(id: String) = "images/users/${id}/profile.jpg"
         fun getReportImageName(id: String) = "reportsImages/${id}/reportImage.jpg"
     }
 }

@@ -14,15 +14,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.harelshaigal.madamal.data.LocationDataViewModel
+import com.harelshaigal.madamal.data.report.ReportRepository
 import com.harelshaigal.madamal.data.user.UserRepository
 import com.harelshaigal.madamal.databinding.ActivityMainBinding
-
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationViewModel: LocationDataViewModel
     private val userRepository: UserRepository = UserRepository()
+    private val reportRepository: ReportRepository = ReportRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,11 +43,13 @@ class MainActivity : AppCompatActivity() {
 
         navView.setupWithNavController(navController)
         userRepository.startUserFetching(Firebase.auth.currentUser?.uid)
+        reportRepository.startReportsFetching()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         userRepository.endUserFetching()
+        reportRepository.endReportsFetching()
     }
 
     private fun getLastLocation() {

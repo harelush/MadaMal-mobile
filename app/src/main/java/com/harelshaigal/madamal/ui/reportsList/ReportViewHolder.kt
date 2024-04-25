@@ -20,7 +20,7 @@ class ReportViewHolder(
     fragmentManager: FragmentManager
 ) :
     RecyclerView.ViewHolder(binding.root) {
-    private var currentReportId: Long? = null
+    private var currentReportId: String? = null
 
     init {
         binding.deleteReport.setOnClickListener {

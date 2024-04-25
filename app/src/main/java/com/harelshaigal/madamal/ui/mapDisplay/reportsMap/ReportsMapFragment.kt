@@ -88,6 +88,8 @@ class ReportsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerCli
     }
 
     private fun updateMapMarkers(reports: List<Report>) {
+        googleMapRef?.clear()
+
         for (report in reports) {
             if (report.lat != null && report.lng != null) {
                 val reportMarker = LatLng(report.lat, report.lng)
@@ -101,7 +103,7 @@ class ReportsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerCli
 
     override fun onMarkerClick(marker: Marker): Boolean {
         marker.let {
-            ReportMapDisplayFragment.display(getParentFragmentManager(), it.tag as Long)
+            ReportMapDisplayFragment.display(getParentFragmentManager(), it.tag as String)
             return true
         }
     }

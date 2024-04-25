@@ -36,7 +36,7 @@ class UserProfileFragment : Fragment(), ImagePickerHelper.ImagePickerCallback {
 
         imagePickerHelper = ImagePickerHelper(this, this)
 
-        binding.userProfileProfileImageView.setOnClickListener {
+        binding.ImageButton.setOnClickListener {
             imagePickerHelper.openImagePicker()
         }
 
@@ -47,6 +47,7 @@ class UserProfileFragment : Fragment(), ImagePickerHelper.ImagePickerCallback {
             binding.userProfileFullNameText.setText(user?.fullName ?: "")
             if (user?.imageUri != null) {
                 Picasso.get().load(user.imageUri).into(binding.userProfileProfileImageView)
+                binding.userProfileProfileImageView.visibility = View.VISIBLE
             }
         }
 
@@ -101,6 +102,9 @@ class UserProfileFragment : Fragment(), ImagePickerHelper.ImagePickerCallback {
     override fun getImageViewForLoad(): ImageView = binding.userProfileProfileImageView
 
     override fun selectedImageExtraLogic(uri: Uri?) {
-        uri.also { selectedImageUri = it }
+        uri.also {
+            selectedImageUri = it
+            binding.userProfileProfileImageView.visibility = View.VISIBLE
+        }
     }
 }

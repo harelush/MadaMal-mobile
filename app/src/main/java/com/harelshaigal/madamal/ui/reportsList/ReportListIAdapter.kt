@@ -7,7 +7,8 @@ import androidx.recyclerview.widget.ListAdapter
 import com.harelshaigal.madamal.data.report.Report
 import com.harelshaigal.madamal.databinding.FragmentReportListItemBinding
 
-class ReportListIAdapter(private val fragmentManager: FragmentManager) : ListAdapter<Report, ReportViewHolder>(ReportDiffCallback()) {
+class ReportListIAdapter(private val fragmentManager: FragmentManager) :
+    ListAdapter<Report, ReportViewHolder>(ReportDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReportViewHolder {
         val binding = FragmentReportListItemBinding.inflate(
@@ -25,7 +26,6 @@ class ReportListIAdapter(private val fragmentManager: FragmentManager) : ListAda
     override fun onBindViewHolder(holder: ReportViewHolder, position: Int) {
         val currentReport: Report = getItem(position)
         holder.bind(currentReport)
-
     }
 }
 
