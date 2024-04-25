@@ -229,17 +229,10 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
                 )
 
             try {
-                if (selectedImageUri != null) {
-//                    reportToSave.image = ImagePickerHelper.uploadImageToFirebaseStorage(
-//                        selectedImageUri, Utils.getReportImageName(reportToSave.id.toString())
-//                    ).toString()
-                }
-
-
                 if (originReport === null) {
-                    repostRepository.addReport(reportToSave)
+                    repostRepository.addReport(reportToSave, selectedImageUri)
                 } else {
-                    repostRepository.updateReport(reportToSave, originReport!!.id)
+                    repostRepository.updateReport(reportToSave, originReport!!.id, selectedImageUri)
                 }
 
                 withContext(Dispatchers.Main) {
