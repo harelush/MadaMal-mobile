@@ -44,7 +44,10 @@ class ReportMapDisplayFragment : BottomSheetDialogFragment() {
         requireArguments().getString("reportId")?.let {
             currentReportId = it
             viewModel.getReportData(it).observe(viewLifecycleOwner) { report ->
-                setDisplayData(report)
+                if (report === null)
+                    dismiss()
+                else
+                    setDisplayData(report)
             }
         }
         return root
@@ -54,14 +57,9 @@ class ReportMapDisplayFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.deleteReport.setOnClickListener {
-
             currentReportId?.let { it1 ->
-                DeleteReportDialog.createDeleteDialog(
-                    view.context,
-                    it1
-                )
+                DeleteReportDialog.createDeleteDialog(view.context, it1)
             }
-
         }
 
         binding.editReport.setOnClickListener {
@@ -76,7 +74,7 @@ class ReportMapDisplayFragment : BottomSheetDialogFragment() {
 
     private fun setDisplayData(currentReport: Report) {
         binding.reportData.text = currentReport.data
-        binding.reportTitle.text = currentReport.data
+        binding.reportTitle.text = currentReport.title
         binding.reportLastUpdateDate.text =
             currentReport.lastUpdated?.let { Utils.formatTimestampToString(it) }
 
