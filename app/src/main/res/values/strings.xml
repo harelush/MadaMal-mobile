@@ -33,5 +33,7 @@
     <string name="logout">התנתק</string>
     <string name="add_image_text">בחר תמונה להעלאה</string>
     <string name="noReportText">לא נמצאו דיווחים מתאימים</string>
+    <string name="noWeather">שגיאה בקבלת מזג אוויר</string>
+    <string name="currentWeather">מזג האוויר הוא</string>
 
 </resources>

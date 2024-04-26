@@ -6,13 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.firebase.auth.FirebaseAuth
+import androidx.lifecycle.ViewModelProvider
+import com.harelshaigal.madamal.R
 import com.harelshaigal.madamal.databinding.FragmentAppbarBinding
 import com.harelshaigal.madamal.ui.login.LoginActivity
+import com.harelshaigal.madamal.viewmodel.WeatherViewModel
 
 class AppbarFragment : Fragment() {
     private var _binding: FragmentAppbarBinding? = null
     private val binding get() = _binding!!
+    private lateinit var weatherViewModel: WeatherViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -20,6 +23,8 @@ class AppbarFragment : Fragment() {
     ): View {
         _binding = FragmentAppbarBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        weatherViewModel = ViewModelProvider(requireActivity()).get(WeatherViewModel::class.java)
 
         return root
     }
@@ -32,6 +37,20 @@ class AppbarFragment : Fragment() {
                 navigateToLogin()
             }
         }
+
+        weatherViewModel.weatherData.observe(viewLifecycleOwner) { weather ->
+            weather?.let {
+                val currentTemperature =
+                    weather.properties.timeseries[0].data.instant.details.air_temperature
+                val weatherLabel = context?.getString(R.string.currentWeather)
+                binding.weather.text = "$weatherLabel: ${currentTemperature}°C"
+            } ?: run {
+                binding.weather.text = context?.getString(R.string.noWeather)
+            }
+        }
+
+
+        weatherViewModel.fetchWeather()
     }
 
     private fun navigateToLogin() {
@@ -40,5 +59,4 @@ class AppbarFragment : Fragment() {
         startActivity(loginIntent)
         activity?.finish()
     }
-
 }
