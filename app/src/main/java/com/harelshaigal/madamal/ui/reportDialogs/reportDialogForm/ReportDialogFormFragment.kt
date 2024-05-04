@@ -19,12 +19,12 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.harelshaigal.madamal.R
-import com.harelshaigal.madamal.data.LocationDataViewModel
 import com.harelshaigal.madamal.data.report.Report
 import com.harelshaigal.madamal.data.report.ReportDto
 import com.harelshaigal.madamal.data.report.ReportRepository
 import com.harelshaigal.madamal.databinding.FragmentReportDialogFormBinding
 import com.harelshaigal.madamal.helpers.ImagePickerHelper
+import com.harelshaigal.madamal.helpers.LocationHelper
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -40,7 +40,6 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
     private var selectedImageUri: Uri? = null
 
     private val repostRepository: ReportRepository = ReportRepository()
-    private lateinit var locationViewModel: LocationDataViewModel
 
     private var originReport: Report? = null
     private lateinit var titleTextInput: TextInputLayout
@@ -56,8 +55,6 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
         val root: View = binding.root
 
         imagePickerHelper = ImagePickerHelper(this, this)
-        locationViewModel =
-            ViewModelProvider(requireActivity()).get(LocationDataViewModel::class.java)
 
         return root
     }
@@ -115,6 +112,7 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
             textInputLayout.boxStrokeColor = Color.GRAY
         }
     }
+
     private fun enableSaveButton() {
         saveReportButton.isEnabled = true
         saveReportButton.alpha = 1.0f
@@ -135,7 +133,7 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
                 binding.addReportContent.setText(currReport.data)
                 binding.addReportTitle.setText(currReport.title)
 
-                if (currReport.image != "null"  && currReport.image != null) {
+                if (currReport.image != "null" && currReport.image != null) {
                     Picasso.get().load(Uri.parse(currReport.image)).into(binding.addReportImageView)
                     binding.addReportImageView.visibility = View.VISIBLE
                 }
@@ -210,22 +208,19 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
         val user = Firebase.auth.currentUser
 
         if (user != null) {
-            val lat = locationViewModel.latitude
-            val lng = locationViewModel.longtitude
-
             val reportToSave: ReportDto = if (originReport === null)
                 ReportDto(
                     userId = user.uid,
                     title = binding.addReportTitle.text.toString(),
                     data = binding.addReportContent.text.toString(),
-                    lat = lat,
-                    lng = lng,
+                    lat = LocationHelper.lat,
+                    lng = LocationHelper.lng,
                 )
             else
                 ReportDto(
                     image = originReport!!.image,
                     userId = originReport!!.userId,
-                    lat= originReport!!.lat,
+                    lat = originReport!!.lat,
                     lng = originReport!!.lng,
                     title = binding.addReportTitle.text.toString(),
                     data = binding.addReportContent.text.toString(),
@@ -235,7 +230,11 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
                 if (originReport === null) {
                     repostRepository.addReport(reportToSave, selectedImageUri)
                 } else {
-                    repostRepository.updateReport(reportToSave, originReport!!.id, selectedImageUri)
+                    repostRepository.updateReport(
+                        reportToSave,
+                        originReport!!.id,
+                        selectedImageUri
+                    )
                 }
 
                 withContext(Dispatchers.Main) {
@@ -255,6 +254,7 @@ class ReportDialogFormFragment : DialogFragment(), ImagePickerHelper.ImagePicker
                 }
             }
         }
+
 
     }
 }

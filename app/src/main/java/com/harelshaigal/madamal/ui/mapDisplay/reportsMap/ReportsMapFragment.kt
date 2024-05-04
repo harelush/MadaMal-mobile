@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.harelshaigal.madamal.data.report.Report
 import com.harelshaigal.madamal.databinding.FragmentReportsMapBinding
+import com.harelshaigal.madamal.helpers.LocationHelper
 import com.harelshaigal.madamal.ui.mapDisplay.reportMapDisplay.ReportMapDisplayFragment
 
 class ReportsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -76,7 +77,7 @@ class ReportsMapFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerCli
 
         observeReports()
 
-        val location = LatLng(31.97007377827919, 34.772878313889215)
+        val location = LatLng(LocationHelper.lat, LocationHelper.lng,)
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 12f))
         googleMap.setOnMarkerClickListener(this)
     }
