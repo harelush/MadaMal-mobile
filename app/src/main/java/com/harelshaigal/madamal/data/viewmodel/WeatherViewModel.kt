@@ -5,7 +5,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
-import com.harelshaigal.madamal.data.LocationDataViewModel
 import com.harelshaigal.madamal.data.WeatherData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,13 +20,12 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
     private val client = OkHttpClient()
     val weatherData: LiveData<WeatherData?> = _weatherData
     private val ioDispatcher = Dispatchers.IO
-    private lateinit var locationViewModel: LocationDataViewModel
 
 
     fun fetchWeather() {
 //         On a Real device use this values, on emulator those are not true
-//        val lat = locationViewModel.latitude
-//        val lon = locationViewModel.longtitude
+//        val lat = LocationHelper.lat,
+//        val lon = LocationHelper.lng,
 
         val url =
             "https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=32.067624&lon=34.776054"
